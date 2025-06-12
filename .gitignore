@@ -6,8 +6,6 @@
 /out-tsc
 /bazel-out
 
-# build directories
-/docs
 
 # Node
 /node_modules
