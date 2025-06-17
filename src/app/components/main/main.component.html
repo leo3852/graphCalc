@@ -16,7 +16,7 @@
                     <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje Y">
                 </div>
             </div>
-            <button type="button" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="assignLabels()">
+            <button type="button" class="mb-16 mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="assignLabels()">
                 Asignar etiquetas
             </button>
         </form>
@@ -33,11 +33,11 @@
                 <!-- Inputs organizados horizontalmente -->
                 <div class="md:flex items-center gap-4 w-full md:w-3/4">
                     <label for="valueX" class="text-lg text-gray-700">Valor en {{labelX}}:</label>
-                    <input id="valueX" type="number" [(ngModel)]="valueX" name="valueX" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelX}}">
+                    <input id="valueX" type="number" inputmode="numeric" [(ngModel)]="valueX" name="valueX" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelX}}">
                 </div>
                 <div class="md:flex items-center gap-4 w-full md:w-3/4">
                     <label for="valueY" class="text-lg text-gray-700">Valor en {{labelY}}:</label>
-                    <input id="valueY" type="number" [(ngModel)]="valueY" name="valueY" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelY}}">
+                    <input id="valueY" type="number" inputmode="numeric" [(ngModel)]="valueY" name="valueY" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelY}}">
                 </div>
                 <!-- Botón circular -->
                 <button type="button" class="px-8 py-6 text-center text-2xl bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="addValues()">
@@ -79,7 +79,7 @@
                  </button>
                  <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph()">
                      Polinómica
-                     
+
                  </button>
              </div>
              
