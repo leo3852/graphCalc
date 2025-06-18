@@ -127,11 +127,13 @@ export class MainComponent implements AfterViewInit {
     // Generar la ecuación polinómica con manejo de signos
     this.equation = `y = ${a.toFixed(5)}x² ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(5)}x ${c >= 0 ? '+ ' : '- '}${Math.abs(c).toFixed(5)}`;
 
-    const minX = 0; // Forzar que el eje x comience en 0
+    const minX = 0;
     const maxX = Math.max(...this.values.map((pair) => pair.x));
-    const labels = Array.from({ length: Math.ceil((maxX - minX) / 10) + 1 }, (_, i) => minX + i * 10);
+    const maxY = Math.max(...this.values.map((pair) => pair.y)); // Obtener el máximo valor de Y
 
-    const polynomialData = labels.map((x) => ({ x, y: a * x * x + b * x + c })); // Generar puntos de la curva polinómica
+    // Generar puntos de la curva polinómica (50 puntos entre minX y maxX)
+    const labels = Array.from({ length: 50 }, (_, i) => minX + (i * (maxX - minX) / 49));
+    const polynomialData = labels.map((x) => ({ x, y: a * x * x + b * x + c }));
 
     if (this.chart) {
       this.chart.destroy(); // Destruye la gráfica anterior si existe
@@ -183,14 +185,16 @@ export class MainComponent implements AfterViewInit {
               display: true,
               text: this.labelX
             },
-            min: minX // Forzar que el eje x comience en 0
+            min: minX, // Forzar que el eje x comience en el mínimo valor
+            max: maxX // Forzar que el eje x termine en el máximo valor
           },
           y: {
             title: {
               display: true,
               text: this.labelY
             },
-            min: 0 // Forzar que el eje y comience en 0
+            min: 0, // Forzar que el eje y comience en 0
+            max: maxY // Forzar que el eje y termine en el máximo valor
           }
         }
       }
@@ -198,31 +202,51 @@ export class MainComponent implements AfterViewInit {
   }
 
   generateExponentialGraph(): void {
-    const labels = this.values.map((pair) => pair.x.toString());
-    const data = this.values.map((pair) => Math.exp(pair.x)); // Ejemplo: y = e^x
-  
+    const { A, B } = this.calculateExponentialRegression(this.values);
+
+    // Generar la ecuación exponencial
+    this.equation = `y = ${A.toFixed(2)} * e^(${B.toFixed(4)}x)`;
+
+    const minX = 0; // Forzar que el eje x comience en 0
+    const maxX = Math.max(...this.values.map((pair) => pair.x));
+    const maxY = Math.max(...this.values.map((pair) => pair.y)); // Obtener el máximo valor de Y
+    const labels = Array.from({ length: Math.ceil((maxX - minX) / 10) + 1 }, (_, i) => minX + i * 10);
+    const exponentialData = labels.map((x) => ({ x, y: A * Math.exp(B * x) })); // Generar puntos de la curva exponencial
+
     if (this.chart) {
-      this.chart.destroy();
+      this.chart.destroy(); // Destruye la gráfica anterior si existe
     }
-  
+
     const canvas = document.getElementById('chartCanvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.error('Unable to get 2D context');
       return;
     }
-    
+
     this.chart = new Chart(ctx, {
-      type: 'line',
+      type: 'scatter', // Mantener el tipo de gráfico como 'scatter'
       data: {
-        labels: labels,
         datasets: [
           {
-            label: 'Gráfica Exponencial',
-            data: data,
-            borderColor: 'rgba(54, 162, 235, 1)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderWidth: 2
+            label: this.equation, // Mostrar la ecuación como etiqueta
+            data: exponentialData, // Puntos calculados de la curva exponencial
+            borderColor: 'green',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 1, // Tamaño de los puntos
+            showLine: true, // Conectar los puntos con una línea
+            tension: 0.4 // Curva suave
+          },
+          {
+            label: 'Puntos Originales',
+            data: this.values, // Mostrar los puntos originales { x, y }
+            borderColor: 'red',
+            backgroundColor: 'red',
+            borderWidth: 0,
+            pointRadius: 5, // Tamaño de los puntos
+            pointStyle: 'circle', // Estilo de los puntos
+            showLine: false // No conectar los puntos con una línea
           }
         ]
       },
@@ -238,18 +262,23 @@ export class MainComponent implements AfterViewInit {
             title: {
               display: true,
               text: this.labelX
-            }
+            },
+            min: minX, // Ajustar el eje x al mínimo valor
+            max: maxX // Ajustar el eje x al máximo valor
           },
           y: {
             title: {
               display: true,
               text: this.labelY
-            }
+            },
+            min: 0, // Ajustar el eje y al mínimo valor
+            max: maxY // Ajustar el eje y al máximo valor
           }
         }
       }
     });
   }
+  
 
   calculateLinearRegression(values: { x: number, y: number }[]): { m: number, b: number } {
     const n = values.length;
@@ -283,6 +312,23 @@ export class MainComponent implements AfterViewInit {
 
     const [c, b, a] = this.solveLinearSystem(matrix); // Ajustar el orden de los coeficientes
     return { a, b, c };
+  }
+
+  calculateExponentialRegression(values: { x: number, y: number }[]): { A: number, B: number } {
+    const n = values.length;
+    const sumX = values.reduce((acc, pair) => acc + pair.x, 0);
+    const sumLnY = values.reduce((acc, pair) => acc + Math.log(pair.y), 0);
+    const sumX2 = values.reduce((acc, pair) => acc + pair.x * pair.x, 0);
+    const sumXlnY = values.reduce((acc, pair) => acc + pair.x * Math.log(pair.y), 0);
+
+    // Calcular B y ln(A)
+    const B = (n * sumXlnY - sumX * sumLnY) / (n * sumX2 - sumX * sumX);
+    const lnA = (sumLnY - B * sumX) / n;
+
+    // Convertir ln(A) a A
+    const A = Math.exp(lnA);
+
+    return { A, B };
   }
 
   solveLinearSystem(matrix: number[][]): number[] {
