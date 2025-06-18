@@ -580,4 +580,5 @@ export class MainComponent implements AfterViewInit {
       }
     });
   }
+  
 }

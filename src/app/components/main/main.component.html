@@ -117,8 +117,8 @@
             </thead>
             <tbody>
                 <tr *ngFor="let pair of values; let i = index">
-                    <td class="border border-gray-300 px-4 py-2 w-20">{{ pair.x }}</td>
-                    <td class="border border-gray-300 px-4 py-2 w-20">{{ pair.y }}</td>
+                    <td class="border border-gray-300 px-4 py-2 w-20">{{ pair.x.toFixed(2) }}</td>
+                    <td class="border border-gray-300 px-4 py-2 w-20">{{ pair.y.toFixed(2) }}</td>
                     <td class="border border-gray-300 px-4 py-2 w-10">
                         <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" (click)="removeValue(i)">
                             x
@@ -186,6 +186,18 @@
                         </div>
                     </label>
                 </div>
+                <!-- Toggle para alejar -->
+                <!-- <div class="flex justify-center items-center mt-5">
+                    <label class="flex items-center cursor-pointer">
+                        <p class="mr-2 text-gray-700">Alejar</p>
+                        <input type="checkbox" [(ngModel)]="startFromZero" class="hidden" id="toggleStartFromZero">
+                        <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
+                            [class.bg-blue-500]="startFromZero" [class.bg-gray-300]="!startFromZero">
+                            <div class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full transform transition-transform duration-300"
+                                [class.translate-x-5]="startFromZero"></div>
+                        </div>
+                    </label>
+                </div> -->
 
             </div>
         </div>
