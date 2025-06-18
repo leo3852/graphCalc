@@ -1,20 +1,77 @@
 <div class="mt-5 max-w-4xl mx-auto text-center p-6 rounded-lg shadow-md bg-white">
     <!-- Step 1: Asignación de etiquetas -->
     <div *ngIf="currentStep === 1">
-        <div class="flex items-center justify-center mb-4">
-            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">1</span>
+        <div class="flex items-center justify-center mb-10 mt-10">
+            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
         </div>
         <h2 class="text-2xl mb-4 text-gray-700">Datos para la gráfica</h2>
-        <p class="mb-5">Ingrese las etiquetas:</p>
+        <p class="mb-5">Ingrese las etiquetas y unidades de medida (opcional):</p>
         <form class="space-y-4 mb-16">
             <div class="flex flex-wrap gap-4 justify-center mb-5">
-                <div class="w-full md:w-1/2">
-                    <input id="labelX" type="text" [(ngModel)]="labelX" name="labelX" class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje X">
+                <!-- Input para etiqueta del eje X -->
+                <div class="w-full md:w-1/2 flex items-center gap-2">
+                    <input id="labelX" type="text" [(ngModel)]="labelX" name="labelX" 
+                        class="w-full p-3 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="Etiqueta del eje X" maxlength="15">
+                    <div class="relative">
+                        <input id="unitX" type="text" [(ngModel)]="unitX" name="unitX" 
+                            class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500 placeholder:translate-y-1 pt-5 pb-1  " 
+                            placeholder="Unidad" maxlength="8">
+                        <select class="absolute top-0 right-0 w-24 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none" 
+                            (change)="onUnitChange($event, 'unitX')">
+                            <option value="">Seleccionar</option>
+                            <option value="μ">μ (mu)</option>
+                            <option value="Ω">Ω (omega)</option>
+                            <option value="π">π (pi)</option>
+                            <option value="α">α (alfa)</option>
+                            <option value="β">β (beta)</option>
+                            <option value="γ">γ (gamma)</option>
+                            <option value="δ">δ (delta)</option>
+                            <option value="²">² (superíndice)</option>
+                            <option value="ₓ">ₓ (subíndice x)</option>
+                            <option value="ₙ">ₙ (subíndice n)</option>
+                            <option value="θ">θ (theta)</option>
+                            <option value="λ">λ (lambda)</option>
+                            <option value="σ">σ (sigma)</option>
+                            <option value="τ">τ (tau)</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="w-full md:w-1/2">
-                    <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje Y">
+                <!-- Input para etiqueta del eje Y -->
+                <div class="w-full md:w-1/2 flex items-center gap-2">
+                    <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" 
+                        class="w-full p-3 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 " 
+                        placeholder="Etiqueta del eje Y" maxlength="15">
+                    <div class="relative">
+                        <input id="unitY" type="text" [(ngModel)]="unitY" name="unitY" 
+                            class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500 placeholder:translate-y-1 pt-5 pb-1" 
+                            placeholder="Unidad" maxlength="8">
+                        <select class="absolute top-0 right-0 w-24 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none" 
+                            (change)="onUnitChange($event, 'unitY')">
+                            <option value="" class="text-gray-500">Seleccionar</option>
+                            <option value="μ">μ (mu)</option>
+                            <option value="Ω">Ω (omega)</option>
+                            <option value="π">π (pi)</option>
+                            <option value="α">α (alfa)</option>
+                            <option value="β">β (beta)</option>
+                            <option value="γ">γ (gamma)</option>
+                            <option value="δ">δ (delta)</option>
+                            <option value="²">² (superíndice)</option>
+                            <option value="ₓ">ₓ (subíndice x)</option>
+                            <option value="ₙ">ₙ (subíndice n)</option>
+                            <option value="θ">θ (theta)</option>
+                            <option value="λ">λ (lambda)</option>
+                            <option value="σ">σ (sigma)</option>
+                            <option value="τ">τ (tau)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+            <p *ngIf="showError && !labelX" class="text-red-500 text-sm">La etiqueta del eje X es requerida.</p>
+            <p *ngIf="showError && !labelY" class="text-red-500 text-sm">La etiqueta del eje Y es requerida.</p>
             <button type="button" class="mb-16 mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="assignLabels()">
                 Asignar etiquetas
             </button>
@@ -24,23 +81,26 @@
     
     <!-- Step 2: Inserción de valores -->
     <div *ngIf="currentStep === 2 || currentStep === 3" class="text-center">
-        <div class="flex items-center justify-center mb-4">
-            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">2</span>
+        <div class="flex items-center justify-center mb-24 mt-10">
+            <span (click)="resetForm()" class="cursor-pointer bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
+            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
         </div>
-        <h2 class="text-2xl mb-4 text-gray-700">Inserte valores para {{labelX}} (x) e {{labelY}} (y)</h2>
+        <h2 class="text-2xl mb-4 text-gray-700">Inserte valores para {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}})</h2>
         <form class="space-y-6">
             <div class="flex items-center gap-6">
                 <!-- Inputs organizados horizontalmente -->
-                <div class="md:flex items-center gap-4 w-full md:w-3/4">
-                    <label for="valueX" class="text-lg text-gray-700">Valor en {{labelX}}:</label>
+                <div class=" items-center gap-4 w-full md:w-3/4">
+                    <!-- <label for="valueX" class="text-lg text-gray-700">Valor en {{labelX}} ({{unitX ? unitX : 'Unidad'}}):</label> -->
                     <input id="valueX" type="number" inputmode="numeric" [(ngModel)]="valueX" name="valueX" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelX}}">
                 </div>
-                <div class="md:flex items-center gap-4 w-full md:w-3/4">
-                    <label for="valueY" class="text-lg text-gray-700">Valor en {{labelY}}:</label>
+                <div class=" items-center gap-4 w-full md:w-3/4">
+                    <!-- <label for="valueY" class="text-lg text-gray-700">Valor en {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</label> -->
                     <input id="valueY" type="number" inputmode="numeric" [(ngModel)]="valueY" name="valueY" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelY}}">
                 </div>
                 <!-- Botón circular -->
-                <button type="button" class="px-8 py-6 text-center text-2xl bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="addValues()">
+                <button type="button" class="px-6 py-4 text-center text-3xl bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="addValues()">
                     +
                 </button>
             </div>
@@ -50,16 +110,16 @@
             <caption class="text-lg font-semibold text-gray-700 mb-2">Valores ingresados</caption>
             <thead>
                 <tr>
-                    <th class="border border-gray-300 px-4 py-2 w-20">{{labelX}}</th>
-                    <th class="border border-gray-300 px-4 py-2 w-20">{{labelY}}</th>
-                    <th class="border border-gray-300 px-4 py-2 w-16">Eliminar</th>
+                    <th class="border border-gray-300 px-4 py-2 w-20">{{labelX}}({{unitX ? unitX : 'Unidad'}})</th>
+                    <th class="border border-gray-300 px-4 py-2 w-20">{{labelY}}({{unitY ? unitY : 'Unidad'}})</th>
+                    <th class="border border-gray-300 px-4 py-2 w-10">Eliminar</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let pair of values; let i = index">
                     <td class="border border-gray-300 px-4 py-2 w-20">{{ pair.x }}</td>
                     <td class="border border-gray-300 px-4 py-2 w-20">{{ pair.y }}</td>
-                    <td class="border border-gray-300 px-4 py-2 w-16">
+                    <td class="border border-gray-300 px-4 py-2 w-10">
                         <button type="button" class="px-4 py-2 bg-red-500 text-white rounded-full shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500" (click)="removeValue(i)">
                             x
                         </button>
@@ -68,37 +128,64 @@
             </tbody>
         </table>
         <!-- Botones para seleccionar el tipo de gráfica -->
-         <div *ngIf="values.length > 0" class="mb-16">
-            <p class="text-center">Generar:</p>
-             <div class="mt-6 flex justify-center gap-4" >
-                 <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph()">
-                     Lineal
-                 </button>
-                 <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph()">
-                     Polinómica
-
-                 </button>
-                 <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph()">
-                     Exponencial
-                 </button>
-             </div>
-         </div>
-        </div>
+        <div *ngIf="values.length > 1" class="mb-16">  
+            <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateGraph()">
+                Generar
+            </button>
+        </div> 
+    </div>
         
         
         <!-- Step 3: Gráfica generada -->
     <div [class.hidden]="currentStep !== 3" class="text-center mt-10">
         <!-- Línea divisoria -->
         <hr class="border-t border-gray-300 my-8">
-        <div class="flex items-center justify-center mb-4">
-            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">3</span>
+        <div class="flex items-center justify-center mb-24 mt-10">
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
+            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
         </div>
         <h2 class="text-2xl mb-1 text-gray-700">Gráfica generada</h2>
-        <p class="mb-10 text-lg text-gray-600">La gráfica ha sido generada con los datos ingresados.</p>
+        <p class="mb-10 text-lg text-gray-600">Se ingresaron los puntos.</p>
 
         <!-- Lienzo para la gráfica -->
-        <div class="mt-10 mb-10">
-            <canvas id="chartCanvas"></canvas>
+        <div class="mt-10 mb-20 flex justify-center items-center">
+            <canvas id="chartCanvas" [width]="canvasWidth" [height]="canvasHeight"></canvas>
+        </div>
+
+        
+        <div class="mt-5" >
+            <div class="flex items-center justify-center mb-10 mt-10">
+                <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
+                <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
+            </div>
+            <div class="flex justify-center items-center gap-4">
+                <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph()">
+                    Lineal
+                </button>
+                <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph()">
+                    Polinómica
+                </button>
+                <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph()">
+                    Exponencial
+                </button>
+                <!-- Toggle para controlar si los ejes comienzan desde 0 -->
+                <div class="flex justify-center items-center mt-5">
+                    <label class="flex items-center cursor-pointer">
+                        <p class="mr-2 text-gray-700">Ejes desde 0</p>
+                        <input type="checkbox" [(ngModel)]="startFromZero" class="hidden" id="toggleStartFromZero">
+                        <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
+                            [class.bg-blue-500]="startFromZero" [class.bg-gray-300]="!startFromZero">
+                            <div class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full transform transition-transform duration-300"
+                                [class.translate-x-5]="startFromZero"></div>
+                        </div>
+                    </label>
+                </div>
+
+            </div>
         </div>
         
         <!-- Mostrar ecuación -->
