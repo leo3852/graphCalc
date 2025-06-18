@@ -19,6 +19,7 @@ export class MainComponent implements AfterViewInit {
   valueY: number | null = null;
   values: { x: number, y: number }[] = []; // Almacena los pares de valores X e Y
   chart: Chart | null = null;
+graphType: any;
 
   constructor() {
     // Registrar todos los componentes necesarios de Chart.js
@@ -51,6 +52,7 @@ export class MainComponent implements AfterViewInit {
   }
 
   generateLinearGraph(): void {
+    this.graphType = 'lineal';
     const { m, b } = this.calculateLinearRegression(this.values);
 
     // Generar la ecuación lineal con manejo de signos
@@ -122,6 +124,7 @@ export class MainComponent implements AfterViewInit {
   }
 
   generatePolynomialGraph(): void {
+    this.graphType = 'polynomial';
     const { a, b, c } = this.calculatePolynomialRegression(this.values);
 
     // Generar la ecuación polinómica con manejo de signos
@@ -202,6 +205,7 @@ export class MainComponent implements AfterViewInit {
   }
 
   generateExponentialGraph(): void {
+    this.graphType = 'exponencial';
     const { A, B } = this.calculateExponentialRegression(this.values);
 
     // Generar la ecuación exponencial

@@ -1,19 +1,18 @@
-<div class="mt-5 max-w-4xl mx-auto text-center p-6 bg-gray-100/50 rounded-lg shadow-md">
+<div class="mt-5 max-w-4xl mx-auto text-center p-6 rounded-lg shadow-md bg-white">
     <!-- Step 1: Asignación de etiquetas -->
     <div *ngIf="currentStep === 1">
         <div class="flex items-center justify-center mb-4">
             <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">1</span>
         </div>
         <h2 class="text-2xl mb-4 text-gray-700">Datos para la gráfica</h2>
-        <form class="space-y-4 mb-16 ">
-            <div class="flex flex-wrap gap-4 justify-center">
+        <p class="mb-5">Ingrese las etiquetas:</p>
+        <form class="space-y-4 mb-16">
+            <div class="flex flex-wrap gap-4 justify-center mb-5">
                 <div class="w-full md:w-1/2">
-                    <label for="labelX" class="block text-lg text-gray-700 mb-2">Etiqueta del eje X:</label>
-                    <input id="labelX" type="text" [(ngModel)]="labelX" name="labelX" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje X">
+                    <input id="labelX" type="text" [(ngModel)]="labelX" name="labelX" class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje X">
                 </div>
                 <div class="w-full md:w-1/2">
-                    <label for="labelY" class="block text-lg text-gray-700 mb-2">Etiqueta del eje Y:</label>
-                    <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje Y">
+                    <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ingrese la etiqueta del eje Y">
                 </div>
             </div>
             <button type="button" class="mb-16 mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="assignLabels()">
@@ -21,7 +20,8 @@
             </button>
         </form>
     </div>
-
+    
+    
     <!-- Step 2: Inserción de valores -->
     <div *ngIf="currentStep === 2 || currentStep === 3" class="text-center">
         <div class="flex items-center justify-center mb-4">
@@ -82,28 +82,70 @@
                      Exponencial
                  </button>
              </div>
-             
-
          </div>
-    </div>
-    <!-- Step 3: Grafica con datos y boton para empezar de nuevo -->
-    <!-- <div *ngIf="currentStep === 3" class="text-center"> -->
+        </div>
+        
+        
+        <!-- Step 3: Gráfica generada -->
     <div [class.hidden]="currentStep !== 3" class="text-center mt-10">
+        <!-- Línea divisoria -->
+        <hr class="border-t border-gray-300 my-8">
         <div class="flex items-center justify-center mb-4">
             <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">3</span>
         </div>
         <h2 class="text-2xl mb-1 text-gray-700">Gráfica generada</h2>
         <p class="mb-10 text-lg text-gray-600">La gráfica ha sido generada con los datos ingresados.</p>
 
-        
         <!-- Lienzo para la gráfica -->
-        <div class="mt-10">
+        <div class="mt-10 mb-10">
             <canvas id="chartCanvas"></canvas>
         </div>
         
-        <!-- Mostrar ecuaciones -->
-        <div *ngIf="equation" class="mt-10 mb-6 text-lg text-gray-700">
+        <!-- Mostrar ecuación -->
+        <div *ngIf="equation" class="mt-10 mb-10 text-lg text-gray-700">
             <p><strong>Ecuación:</strong> {{ equation }}</p>
+        </div>
+
+        <!-- Línea divisoria -->
+        <hr class="border-t border-gray-300 my-8">
+
+        <!-- Explicación de la ecuación -->
+        <div class="mt-6 mb-10 text-sm text-left text-gray-600">
+            <p><strong>¿Qué significa esta ecuación?</strong></p>
+            
+            <!-- Explicación para gráfica lineal -->
+            <p *ngIf="graphType === 'lineal'">
+                La ecuación generada es una relación lineal entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. La pendiente indica la tasa de cambio de <strong>{{ labelY }}</strong> por cada unidad de <strong>{{ labelX }}</strong>, mientras que el término independiente representa el valor de <strong>{{ labelY }}</strong> cuando <strong>{{ labelX }}</strong> es igual a cero.
+            </p>
+            <p *ngIf="graphType === 'lineal'" class="mt-4">
+                <strong>¿Cómo se interpreta una pendiente?</strong><br>
+                La pendiente de una línea representa cuánto cambia <strong>{{ labelY }}</strong> por cada unidad de <strong>{{ labelX }}</strong>. 
+                - Si la pendiente es positiva, significa que <strong>{{ labelY }}</strong> aumenta a medida que <strong>{{ labelX }}</strong> aumenta.
+                - Si la pendiente es negativa, significa que <strong>{{ labelY }}</strong> disminuye a medida que <strong>{{ labelX }}</strong> aumenta.
+                - Una pendiente de cero indica que no hay cambio en <strong>{{ labelY }}</strong>, independientemente de <strong>{{ labelX }}</strong>.
+            </p>
+
+            <!-- Explicación para gráfica polinómica -->
+            <p *ngIf="graphType === 'polynomial'">
+                La ecuación generada es una relación polinómica entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Los coeficientes determinan la forma de la curva, incluyendo su curvatura y puntos de inflexión. Esta ecuación describe cómo <strong>{{ labelY }}</strong> cambia de manera no lineal en función de <strong>{{ labelX }}</strong>.
+            </p>
+            <p *ngIf="graphType === 'polynomial'" class="mt-4">
+                <strong>¿Cómo se interpretan los coeficientes?</strong><br>
+                - El coeficiente del término cuadrático determina la curvatura de la gráfica.<br>
+                - El coeficiente del término lineal afecta la inclinación de la curva.<br>
+                - El término independiente indica el valor de <strong>{{ labelY }}</strong> cuando <strong>{{ labelX }}</strong> es igual a cero.
+            </p>
+
+            <!-- Explicación para gráfica exponencial -->
+            <p *ngIf="graphType === 'exponencial'">
+                La ecuación generada es una relación exponencial entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Esto significa que <strong>{{ labelY }}</strong> crece o decrece de manera proporcional a una potencia de <strong>{{ labelX }}</strong>. Los coeficientes determinan la tasa de crecimiento o decrecimiento.
+            </p>
+            <p *ngIf="graphType === 'exponencial'" class="mt-4">
+                <strong>¿Cómo se interpretan los coeficientes?</strong><br>
+                - El coeficiente inicial determina el valor base de <strong>{{ labelY }}</strong>.<br>
+                - El exponente controla la velocidad de crecimiento o decrecimiento de la gráfica.<br>
+                - Una tasa de crecimiento positiva indica un aumento exponencial, mientras que una negativa indica un decrecimiento exponencial.
+            </p>
         </div>
 
         <button type="button" class="mt-10 mb-16 px-6 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" (click)="resetForm()">
