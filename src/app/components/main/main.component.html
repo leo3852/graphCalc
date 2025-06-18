@@ -162,20 +162,22 @@
                 <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
                 <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
             </div>
-            <div class="flex justify-center items-center gap-4">
-                <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph()">
-                    Lineal
-                </button>
-                <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph()">
-                    Polinómica
-                </button>
-                <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph()">
-                    Exponencial
-                </button>
+            <div>
+                <div class="flex justify-center items-center gap-4">
+                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph()">
+                        Lineal
+                    </button>
+                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph()">
+                        Polinómica
+                    </button>
+                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph()">
+                        Exponencial
+                    </button>
+                </div>
                 <!-- Toggle para controlar si los ejes comienzan desde 0 -->
                 <div class="flex justify-center items-center mt-5">
                     <label class="flex items-center cursor-pointer">
-                        <p class="mr-2 text-gray-700">Ejes desde 0</p>
+                        <p class="mr-2 text-gray-700">Empezar ejes desde 0</p>
                         <input type="checkbox" [(ngModel)]="startFromZero" class="hidden" id="toggleStartFromZero">
                         <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
                             [class.bg-blue-500]="startFromZero" [class.bg-gray-300]="!startFromZero">

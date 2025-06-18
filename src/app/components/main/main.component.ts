@@ -178,14 +178,15 @@ export class MainComponent implements AfterViewInit {
       data: {
         datasets: [
           {
-            label: `Regresión Lineal: ${this.equation}`,
+            label: this.equation,
             data: regressionData, // Mantener los valores { x, y }
             borderColor: 'blue',
             backgroundColor: 'transparent',
             borderWidth: 2,
             pointRadius: 0, // Tamaño de los puntos
             showLine: true, // Conectar los puntos con una línea
-            tension: 0 // Línea recta
+            tension: 0, // Línea recta
+            clip: false // Permitir que la línea se dibuje fuera del área visible
           },
           {
             label: 'Puntos Originales',
@@ -279,7 +280,8 @@ export class MainComponent implements AfterViewInit {
             borderWidth: 2,
             pointRadius: 0, // Tamaño de los puntos
             showLine: true, // Conectar los puntos con una línea
-            tension: 0.4 // Curva suave
+            tension: 0.4, // Curva suave
+            clip: false
           },
           {
             label: 'Puntos Originales',
@@ -373,7 +375,8 @@ export class MainComponent implements AfterViewInit {
             borderWidth: 2,
             pointRadius: 0,
             showLine: true,
-            tension: 0.4
+            tension: 0.4,
+            clip: false
           },
           {
             label: 'Puntos Originales',
