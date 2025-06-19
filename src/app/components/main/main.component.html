@@ -134,6 +134,8 @@
             </tbody>
         </table>
         <div *ngIf="values.length > 1">
+            <!-- Línea divisoria -->
+            <hr class="border-t border-gray-300 my-8 mt-24">
             <div class="flex items-center justify-center mb-24 mt-20">
                 <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">1</span>
                 <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">2</span>
@@ -148,12 +150,10 @@
             </div> 
         </div>
     </div>
-        
+    
         
         <!-- Step 3: Gráfica generada -->
     <div [class.hidden]="currentStep !== 3" class="text-center mt-10">
-        <!-- Línea divisoria -->
-        <hr class="border-t border-gray-300 my-8">
         <h2 class="text-2xl mb-1 text-gray-700">Gráfica generada</h2>
         <p class="mb-10 text-lg text-gray-600">Se ingresaron los puntos.</p>
 
@@ -162,7 +162,8 @@
             <canvas id="chartCanvas" [width]="canvasWidth" [height]="canvasHeight"></canvas>
         </div>
 
-        
+        <!-- Línea divisoria -->
+        <hr class="border-t border-gray-300 my-8 mt-24">
         <div class="mt-5" >
             <div class="flex items-center justify-center mb-10 mt-10">
                 <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">1</span>
