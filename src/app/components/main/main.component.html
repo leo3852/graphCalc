@@ -1,11 +1,11 @@
 <div class="mt-5 max-w-4xl mx-auto text-center p-6 rounded-lg shadow-md bg-white">
     <!-- Step 1: Asignación de etiquetas -->
-    <div *ngIf="currentStep === 1">
+    <div *ngIf="currentStep === 1" class="h-full">
         <div class="flex items-center justify-center mb-10 mt-10">
-            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
+            <span class="bg-blue-500 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">1</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">2</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
         </div>
         <h2 class="text-2xl mb-4 text-gray-700">Datos para la gráfica</h2>
         <p class="mb-5">Ingrese las etiquetas y unidades de medida (opcional):</p>
@@ -82,30 +82,36 @@
     <!-- Step 2: Inserción de valores -->
     <div *ngIf="currentStep === 2 || currentStep === 3" class="text-center">
         <div class="flex items-center justify-center mb-24 mt-10">
-            <span (click)="resetForm()" class="cursor-pointer bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
-            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
+            <span (click)="resetForm()" class="cursor-pointer bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">1</span>
+            <span class="bg-blue-500 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">2</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
+            <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
         </div>
-        <h2 class="text-2xl mb-4 text-gray-700">Inserte valores para {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}})</h2>
-        <form class="space-y-6">
-            <div class="flex items-center gap-6">
+        <h2 class="text-2xl mb-4 text-gray-700 font-light">Inserte valores para {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}})</h2>
+        <form class="space-y-6 flex items-center justify-center mt-10">
+            <div class="md:flex items-center gap-6 justify-center">
                 <!-- Inputs organizados horizontalmente -->
                 <div class=" items-center gap-4 w-full md:w-3/4">
                     <!-- <label for="valueX" class="text-lg text-gray-700">Valor en {{labelX}} ({{unitX ? unitX : 'Unidad'}}):</label> -->
-                    <input id="valueX" type="number" inputmode="numeric" [(ngModel)]="valueX" name="valueX" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelX}}">
+                    <input id="valueX" type="number" inputmode="numeric" 
+                    [(ngModel)]="valueX" name="valueX" 
+                    class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="{{labelX}}">
                 </div>
                 <div class=" items-center gap-4 w-full md:w-3/4">
                     <!-- <label for="valueY" class="text-lg text-gray-700">Valor en {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</label> -->
-                    <input id="valueY" type="number" inputmode="numeric" [(ngModel)]="valueY" name="valueY" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{labelY}}">
+                    <input id="valueY" type="number" inputmode="numeric" 
+                    [(ngModel)]="valueY" name="valueY" 
+                    class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    placeholder="{{labelY}}">
                 </div>
                 <!-- Botón circular -->
-                <button type="button" class="px-6 py-4 text-center text-3xl bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="addValues()">
+                <button type="button" class="mt-2 md:mt-0 px-6 py-4 text-center text-3xl bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="addValues()">
                     +
                 </button>
             </div>
         </form>
-        <p class="mt-10 mb-10 text-center text-lg" *ngIf="values.length == 0">Inserte valores para generar</p>
+        <p class="mt-20 mb-10 text-center text-lg text-gray-500 font-light"  *ngIf="values.length == 0">Inserte valores para generar</p>
         <table class="mt-10 mb-10 w-full border-collapse border border-gray-300" *ngIf="values.length > 0">
             <caption class="text-lg font-semibold text-gray-700 mb-2">Valores ingresados</caption>
             <thead>
@@ -127,12 +133,20 @@
                 </tr>
             </tbody>
         </table>
-        <!-- Botones para seleccionar el tipo de gráfica -->
-        <div *ngIf="values.length > 1" class="mb-16">  
-            <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateGraph()">
-                Generar
-            </button>
-        </div> 
+        <div *ngIf="values.length > 1">
+            <div class="flex items-center justify-center mb-24 mt-20">
+                <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">1</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">2</span>
+                <span class="bg-blue-500 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
+            </div>
+            <!-- Botones para seleccionar el tipo de gráfica -->
+            <div class="mb-24">  
+                <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateGraph(); scrollToGraph()">
+                    Generar
+                </button>
+            </div> 
+        </div>
     </div>
         
         
@@ -140,12 +154,6 @@
     <div [class.hidden]="currentStep !== 3" class="text-center mt-10">
         <!-- Línea divisoria -->
         <hr class="border-t border-gray-300 my-8">
-        <div class="flex items-center justify-center mb-24 mt-10">
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
-            <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
-            <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
-        </div>
         <h2 class="text-2xl mb-1 text-gray-700">Gráfica generada</h2>
         <p class="mb-10 text-lg text-gray-600">Se ingresaron los puntos.</p>
 
@@ -157,20 +165,20 @@
         
         <div class="mt-5" >
             <div class="flex items-center justify-center mb-10 mt-10">
-                <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">1</span>
-                <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">2</span>
-                <span class="bg-gray-300 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full mr-2">3</span>
-                <span class="bg-blue-500 text-white text-lg font-bold w-10 h-10 flex items-center justify-center rounded-full">4</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">1</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">2</span>
+                <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
+                <span class="bg-blue-500 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
             </div>
             <div>
                 <div class="flex justify-center items-center gap-4">
-                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph()">
+                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph(); scrollToGraph() ">
                         Lineal
                     </button>
-                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph()">
+                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph(); scrollToGraph()">
                         Polinómica
                     </button>
-                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph()">
+                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph(); scrollToGraph()">
                         Exponencial
                     </button>
                 </div>
@@ -203,8 +211,8 @@
         </div>
         
         <!-- Mostrar ecuación -->
-        <div *ngIf="equation" class="mt-10 mb-10 text-lg text-gray-700">
-            <p><strong>Ecuación:</strong> {{ equation }}</p>
+        <div *ngIf="equation" class="mt-10 mb-10 md:text-xl text-gray-700 p-6 border-2 rounded-full border-green-500">
+            <p><strong class="mr-4">Ecuación:</strong> {{ equation }}</p>
         </div>
 
         <!-- Línea divisoria -->

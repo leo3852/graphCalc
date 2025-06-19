@@ -581,4 +581,12 @@ export class MainComponent implements AfterViewInit {
     });
   }
   
+  scrollToGraph(): void {
+    setTimeout(() => {
+      const graphElement = document.getElementById('chartCanvas');
+      if (graphElement) {
+        graphElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 150); // Esperar un poco para asegurarse de que la gráfica se haya renderizado
+  }
 }
