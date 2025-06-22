@@ -100,7 +100,7 @@
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
         </div>
         <h2 class="text-2xl mb-4 text-gray-700 font-light ">Inserte valores para graficar</h2>
-        <p class="text-sm text-gray-600">Valores en {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</p>
+        <p class="text-sm md:hidden text-gray-600">Valores en {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</p>
         <form class="space-y-6 flex items-center justify-center mt-5 md:mt-10">
             <div class="flex items-center gap-6 justify-center">
                 <div>
@@ -173,7 +173,7 @@
         <p class="mb-10 text-lg text-gray-600">Se ingresaron los puntos.</p>
 
         <!-- Lienzo para la gráfica -->
-        <div class="mt-10 mb-20 flex justify-center items-center">
+        <div class="mt-10 mb-20 flex justify-center items-center cursor-grabbing">
             <canvas id="chartCanvas" [width]="canvasWidth" [height]="canvasHeight"></canvas>
         </div>
 
@@ -188,14 +188,22 @@
             </div>
             <div>
                 <div class="flex justify-center items-center gap-4">
-                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph(); scrollToGraph() ">
+                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph(); scrollToGraph() ">
                         Lineal
                     </button>
-                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph(); scrollToGraph()">
+                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph(); scrollToGraph()">
                         Polinómica
                     </button>
-                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph(); scrollToGraph()">
+                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph(); scrollToGraph()">
                         Exponencial
+                    </button>
+                </div>
+                <div class="flex justify-center items-center gap-4 mt-5 ">
+                    <button type="button" class="px-6 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateInversaGraph(); scrollToGraph() ">
+                        Inversa
+                    </button>
+                    <button type="button" class="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generateLogaritmicGraph(); scrollToGraph()">
+                        Logarítmica
                     </button>
                 </div>
                 <!-- Toggle para controlar si los ejes comienzan desde 0 -->
@@ -228,11 +236,7 @@
         
         <!-- Mostrar ecuación -->
         <div *ngIf="equation" class="mt-10 mb-10 md:text-xl text-center text-gray-700 p-6 border-2 rounded-full border-green-500 bg-green-50/50">
-            <p class="mb-5">Ecuaciones</p>
-            <p><strong class="mr-2">Inversa</strong> {{ equation }}</p>
-            <!-- <p><strong class="mr-2">Logarítmica</strong> {{ equationLogaritmica }}</p> -->
-            <p class="text-sm text-gray-500">Inversa: y = A / x</p>
-            <!-- <p class="text-sm text-gray-500">Logarítmica: y = A * log(B * x)</p> -->
+            <p><strong class="mr-2">Ecuación:</strong> {{ equation }}</p>
         </div>
 
         <!-- Línea divisoria -->

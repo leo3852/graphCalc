@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chart,registerables } from 'chart.js';
+import zoomPlugin from 'chartjs-plugin-zoom';
 
 @Component({
   selector: 'app-main',
@@ -10,13 +11,13 @@ import { Chart,registerables } from 'chart.js';
   styleUrl: './main.component.scss'
 })
 export class MainComponent implements AfterViewInit {
+
   canvasWidth: number = 600; // Tamaño inicial para pantallas grandes
   canvasHeight: number = 600;
 
   
   startFromZero: boolean = false; // Controla si los ejes comienzan desde 0
   equation: string = ''; // Propiedad para almacenar la ecuación generada
-  equationLogaritmica: string = ''; // Propiedad para almacenar la ecuación generada
   
   currentStep = 1; // Controla el paso actual
   labelX = '';
@@ -32,7 +33,7 @@ export class MainComponent implements AfterViewInit {
   
   constructor() {
     // Registrar todos los componentes necesarios de Chart.js
-    Chart.register(...registerables);
+    Chart.register(...registerables,zoomPlugin);
   }
   
   ngOnInit(): void {
@@ -122,6 +123,21 @@ export class MainComponent implements AfterViewInit {
         plugins: {
           legend: {
             display: true
+          },
+          zoom: {
+            pan: {
+              enabled: true, // Habilitar el movimiento (pan)
+              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+            },
+            zoom: {
+              wheel: {
+                enabled: true // Habilitar zoom con la rueda del ratón
+              },
+              pinch: {
+                enabled: true // Habilitar zoom con gestos táctiles
+              },
+              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+            }
           }
         },
         scales: {
@@ -159,25 +175,18 @@ export class MainComponent implements AfterViewInit {
 
     // Generar la ecuación lineal con manejo de signos
     this.equation = `y = ${m.toFixed(2)}x ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(2)}`;
-    // Calcular la ecuación logarítmica
-    const logTransformedValues = this.values.map((pair) => ({
-      x: Math.log(pair.x), // Transformar x a log(x)
-      y: pair.y
-    }));
-  
-    const { m: a, b: logB } = this.calculateLinearRegression(logTransformedValues);
-  
-    // Convertir log(B) a B
-    const B = Math.exp(logB);
-  
-    // Generar la ecuación logarítmica
-    this.equationLogaritmica = `y = ${a.toFixed(2)} * log(${B.toFixed(2)} * x)`;
   
     // Calcular los mínimos adecuados para los ejes si startFromZero está en true
     const minX = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.x)) : 0;
     const minY = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.y)) : 0;
+    const maxX = Math.max(...this.values.map((pair) => pair.x)) + 10; // Aumentar el máximo de X para extender la línea
+    // Generar puntos adicionales para extender la línea
+    const extendedLineData = [
+      { x: minX, y: m * minX + b },
+      { x: maxX, y: m * maxX + b }
+    ];
 
-    const regressionData = this.values.map((pair) => ({ x: pair.x, y: m * pair.x + b })); // y = mx + b
+    //const regressionData = this.values.map((pair) => ({ x: pair.x, y: m * pair.x + b })); // y = mx + b
 
     if (this.chart) {
       this.chart.destroy(); // Destruye la gráfica anterior si existe
@@ -196,7 +205,7 @@ export class MainComponent implements AfterViewInit {
         datasets: [
           {
             label: this.equation,
-            data: regressionData, // Mantener los valores { x, y }
+            data: extendedLineData, // Mantener los valores { x, y }
             borderColor: 'blue',
             backgroundColor: 'transparent',
             borderWidth: 2,
@@ -223,6 +232,21 @@ export class MainComponent implements AfterViewInit {
         plugins: {
           legend: {
             display: true
+          },
+          zoom: {
+            pan: {
+              enabled: true, // Habilitar el movimiento (pan)
+              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+            },
+            zoom: {
+              wheel: {
+                enabled: true // Habilitar zoom con la rueda del ratón
+              },
+              pinch: {
+                enabled: true // Habilitar zoom con gestos táctiles
+              },
+              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+            }
           }
         },
         scales: {
@@ -318,6 +342,21 @@ export class MainComponent implements AfterViewInit {
         plugins: {
           legend: {
             display: true
+          },
+          zoom: {
+            pan: {
+              enabled: true, // Habilitar el movimiento (pan)
+              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+            },
+            zoom: {
+              wheel: {
+                enabled: true // Habilitar zoom con la rueda del ratón
+              },
+              pinch: {
+                enabled: true // Habilitar zoom con gestos táctiles
+              },
+              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+            }
           }
         },
         scales: {
@@ -413,6 +452,21 @@ export class MainComponent implements AfterViewInit {
         plugins: {
           legend: {
             display: true
+          },
+          zoom: {
+            pan: {
+              enabled: true, // Habilitar el movimiento (pan)
+              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+            },
+            zoom: {
+              wheel: {
+                enabled: true // Habilitar zoom con la rueda del ratón
+              },
+              pinch: {
+                enabled: true // Habilitar zoom con gestos táctiles
+              },
+              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+            }
           }
         },
         scales: {
@@ -449,6 +503,14 @@ export class MainComponent implements AfterViewInit {
     });
   }
   
+
+  generateLogaritmicGraph() {
+    throw new Error('Method not implemented.');
+  }
+  
+  generateInversaGraph() {
+    throw new Error('Method not implemented.');
+  }
 
   calculateLinearRegression(values: { x: number, y: number }[]): { m: number, b: number } {
     const n = values.length;
