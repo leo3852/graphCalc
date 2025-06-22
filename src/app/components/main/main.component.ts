@@ -16,6 +16,7 @@ export class MainComponent implements AfterViewInit {
   
   startFromZero: boolean = false; // Controla si los ejes comienzan desde 0
   equation: string = ''; // Propiedad para almacenar la ecuación generada
+  equationLogaritmica: string = ''; // Propiedad para almacenar la ecuación generada
   
   currentStep = 1; // Controla el paso actual
   labelX = '';
@@ -61,6 +62,8 @@ export class MainComponent implements AfterViewInit {
     } else if (unitType === 'unitY') {
       this.unitY += value;
     }
+    // Restablecer el valor del select
+    selectElement.value = "";
   }
 
   assignLabels(): void {
@@ -156,6 +159,20 @@ export class MainComponent implements AfterViewInit {
 
     // Generar la ecuación lineal con manejo de signos
     this.equation = `y = ${m.toFixed(2)}x ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(2)}`;
+    // Calcular la ecuación logarítmica
+    const logTransformedValues = this.values.map((pair) => ({
+      x: Math.log(pair.x), // Transformar x a log(x)
+      y: pair.y
+    }));
+  
+    const { m: a, b: logB } = this.calculateLinearRegression(logTransformedValues);
+  
+    // Convertir log(B) a B
+    const B = Math.exp(logB);
+  
+    // Generar la ecuación logarítmica
+    this.equationLogaritmica = `y = ${a.toFixed(2)} * log(${B.toFixed(2)} * x)`;
+  
     // Calcular los mínimos adecuados para los ejes si startFromZero está en true
     const minX = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.x)) : 0;
     const minY = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.y)) : 0;
@@ -245,7 +262,7 @@ export class MainComponent implements AfterViewInit {
     const { a, b, c } = this.calculatePolynomialRegression(this.values);
 
     // Generar la ecuación polinómica con manejo de signos
-    this.equation = `y = ${a.toFixed(4)}x² ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(4)}x ${c >= 0 ? '+ ' : '- '}${Math.abs(c).toFixed(4)}`;
+    this.equation = `y = ${a.toFixed(2)}x² ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(2)}x ${c >= 0 ? '+ ' : '- '}${Math.abs(c).toFixed(2)}`;
 
     const minX = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.x)) : 0;
     const minY = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.y)) : 0;
@@ -587,6 +604,6 @@ export class MainComponent implements AfterViewInit {
       if (graphElement) {
         graphElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-    }, 150); // Esperar un poco para asegurarse de que la gráfica se haya renderizado
+    }, 200); // Esperar un poco para asegurarse de que la gráfica se haya renderizado
   }
 }

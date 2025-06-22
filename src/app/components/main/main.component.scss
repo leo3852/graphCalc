@@ -16,3 +16,13 @@
       height: 400px;
     }
   }
+  
+  select {
+    -webkit-appearance: none; /* Eliminar el estilo predeterminado en navegadores WebKit */
+    -moz-appearance: none;    /* Eliminar el estilo predeterminado en navegadores Firefox */
+    appearance: none;         /* Eliminar el estilo predeterminado en navegadores modernos */
+    background: none;         /* Eliminar el fondo predeterminado */
+    border: none;             /* Eliminar el borde */
+    outline: none;            /* Eliminar el contorno */
+    cursor: pointer;          /* Cambiar el cursor a puntero */
+  }

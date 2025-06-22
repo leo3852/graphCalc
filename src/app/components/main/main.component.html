@@ -14,59 +14,71 @@
                 <!-- Input para etiqueta del eje X -->
                 <div class="w-full md:w-1/2 flex items-center gap-2">
                     <input id="labelX" type="text" [(ngModel)]="labelX" name="labelX" 
-                        class="w-full p-3 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
                         placeholder="Etiqueta del eje X" maxlength="15">
-                    <div class="relative">
+                    <div class="relative flex items-center">
                         <input id="unitX" type="text" [(ngModel)]="unitX" name="unitX" 
-                            class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500 placeholder:translate-y-1 pt-5 pb-1  " 
+                            class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500" 
                             placeholder="Unidad" maxlength="8">
-                        <select class="absolute top-0 right-0 w-24 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none" 
-                            (change)="onUnitChange($event, 'unitX')">
-                            <option value="">Seleccionar</option>
-                            <option value="μ">μ (mu)</option>
-                            <option value="Ω">Ω (omega)</option>
-                            <option value="π">π (pi)</option>
-                            <option value="α">α (alfa)</option>
-                            <option value="β">β (beta)</option>
-                            <option value="γ">γ (gamma)</option>
-                            <option value="δ">δ (delta)</option>
-                            <option value="²">² (superíndice)</option>
-                            <option value="ₓ">ₓ (subíndice x)</option>
-                            <option value="ₙ">ₙ (subíndice n)</option>
-                            <option value="θ">θ (theta)</option>
-                            <option value="λ">λ (lambda)</option>
-                            <option value="σ">σ (sigma)</option>
-                            <option value="τ">τ (tau)</option>
-                        </select>
+                        <div class="relative ml-2">
+                            <button type="button" class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                x²
+                            </button>
+                            <select class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" 
+                                (change)="onUnitChange($event, 'unitX')">
+                                <option value="">Agregar</option>
+                                <option value="²">² (superíndice)</option>
+                                <option value="³">³ (superíndice)</option>
+                                <option value="ₓ">ₓ (subíndice x)</option>
+                                <option value="ₙ">ₙ (subíndice n)</option>
+                                <option value="α">α (alfa)</option>
+                                <option value="β">β (beta)</option>
+                                <option value="γ">γ (gamma)</option>
+                                <option value="δ">δ (delta)</option>
+                                <option value="θ">θ (theta)</option>
+                                <option value="λ">λ (lambda)</option>
+                                <option value="μ">μ (mu)</option>
+                                <option value="Ω">Ω (omega)</option>
+                                <option value="π">π (pi)</option>
+                                <option value="σ">σ (sigma)</option>
+                                <option value="ε">ε (epsilon)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- Input para etiqueta del eje Y -->
                 <div class="w-full md:w-1/2 flex items-center gap-2">
                     <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" 
-                        class="w-full p-3 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 " 
+                        class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 " 
                         placeholder="Etiqueta del eje Y" maxlength="15">
-                    <div class="relative">
+                    <div class="relative flex items-center">
                         <input id="unitY" type="text" [(ngModel)]="unitY" name="unitY" 
-                            class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500 placeholder:translate-y-1 pt-5 pb-1" 
+                            class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500" 
                             placeholder="Unidad" maxlength="8">
-                        <select class="absolute top-0 right-0 w-24 bg-white border border-gray-300 rounded-lg text-sm focus:outline-none" 
-                            (change)="onUnitChange($event, 'unitY')">
-                            <option value="" class="text-gray-500">Seleccionar</option>
-                            <option value="μ">μ (mu)</option>
-                            <option value="Ω">Ω (omega)</option>
-                            <option value="π">π (pi)</option>
-                            <option value="α">α (alfa)</option>
-                            <option value="β">β (beta)</option>
-                            <option value="γ">γ (gamma)</option>
-                            <option value="δ">δ (delta)</option>
-                            <option value="²">² (superíndice)</option>
-                            <option value="ₓ">ₓ (subíndice x)</option>
-                            <option value="ₙ">ₙ (subíndice n)</option>
-                            <option value="θ">θ (theta)</option>
-                            <option value="λ">λ (lambda)</option>
-                            <option value="σ">σ (sigma)</option>
-                            <option value="τ">τ (tau)</option>
-                        </select>
+                        <div class="relative ml-2">
+                            <button type="button" class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                x²
+                            </button>
+                            <select class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" 
+                                (change)="onUnitChange($event, 'unitY')">
+                                <option value="">Agregar</option>
+                                <option value="²">² (superíndice)</option>
+                                <option value="³">³ (superíndice)</option>
+                                <option value="ₓ">ₓ (subíndice x)</option>
+                                <option value="ₙ">ₙ (subíndice n)</option>
+                                <option value="α">α (alfa)</option>
+                                <option value="β">β (beta)</option>
+                                <option value="γ">γ (gamma)</option>
+                                <option value="δ">δ (delta)</option>
+                                <option value="θ">θ (theta)</option>
+                                <option value="λ">λ (lambda)</option>
+                                <option value="μ">μ (mu)</option>
+                                <option value="Ω">Ω (omega)</option>
+                                <option value="π">π (pi)</option>
+                                <option value="σ">σ (sigma)</option>
+                                <option value="ε">ε (epsilon)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,26 +99,29 @@
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
         </div>
-        <h2 class="text-2xl mb-4 text-gray-700 font-light">Inserte valores para {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}})</h2>
-        <form class="space-y-6 flex items-center justify-center mt-10">
-            <div class="md:flex items-center gap-6 justify-center">
-                <!-- Inputs organizados horizontalmente -->
-                <div class=" items-center gap-4 w-full md:w-3/4">
-                    <!-- <label for="valueX" class="text-lg text-gray-700">Valor en {{labelX}} ({{unitX ? unitX : 'Unidad'}}):</label> -->
-                    <input id="valueX" type="number" inputmode="numeric" 
-                    [(ngModel)]="valueX" name="valueX" 
-                    class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="{{labelX}}">
-                </div>
-                <div class=" items-center gap-4 w-full md:w-3/4">
-                    <!-- <label for="valueY" class="text-lg text-gray-700">Valor en {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</label> -->
-                    <input id="valueY" type="number" inputmode="numeric" 
-                    [(ngModel)]="valueY" name="valueY" 
-                    class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    placeholder="{{labelY}}">
+        <h2 class="text-2xl mb-4 text-gray-700 font-light ">Inserte valores para graficar</h2>
+        <p class="text-sm text-gray-600">Valores en {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</p>
+        <form class="space-y-6 flex items-center justify-center mt-5 md:mt-10">
+            <div class="flex items-center gap-6 justify-center">
+                <div>
+                    <!-- Inputs organizados horizontalmente -->
+                    <div class="flex items-center gap-4 w-full">
+                        <label for="valueX" class="text-sm w-full text-gray-700 max-md:hidden md:block">Valor en {{labelX}} ({{unitX ? unitX : 'Unidad'}}):</label>
+                        <input id="valueX" type="number" inputmode="numeric" 
+                        [(ngModel)]="valueX" name="valueX" 
+                        class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="{{labelX}}">
+                    </div>
+                    <div class="flex items-center gap-4 w-full">
+                        <label for="valueY" class="text-sm text-gray-700  max-md:hidden md:block">Valor en {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</label>
+                        <input id="valueY" type="number" inputmode="numeric" 
+                        [(ngModel)]="valueY" name="valueY" 
+                        class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        placeholder="{{labelY}}">
+                    </div>
                 </div>
                 <!-- Botón circular -->
-                <button type="button" class="mt-2 md:mt-0 px-6 py-4 text-center text-3xl bg-blue-500 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="addValues()">
+                <button type="button" class="mt-2 md:mt-0 px-6 py-4 text-center text-3xl bg-green-500 text-white rounded-full shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" (click)="addValues()">
                     +
                 </button>
             </div>
@@ -212,12 +227,20 @@
         </div>
         
         <!-- Mostrar ecuación -->
-        <div *ngIf="equation" class="mt-10 mb-10 md:text-xl text-gray-700 p-6 border-2 rounded-full border-green-500">
-            <p><strong class="mr-4">Ecuación:</strong> {{ equation }}</p>
+        <div *ngIf="equation" class="mt-10 mb-10 md:text-xl text-center text-gray-700 p-6 border-2 rounded-full border-green-500 bg-green-50/50">
+            <p class="mb-5">Ecuaciones</p>
+            <p><strong class="mr-2">Inversa</strong> {{ equation }}</p>
+            <p><strong class="mr-2">Logarítmica</strong> {{ equationLogaritmica }}</p>
+            <p class="text-sm text-gray-500">Inversa: y = A / x</p>
+            <p class="text-sm text-gray-500">Logarítmica: y = A * log(B * x)</p>
         </div>
 
         <!-- Línea divisoria -->
         <hr class="border-t border-gray-300 my-8">
+
+
+
+
 
         <!-- Explicación de la ecuación -->
         <div class="mt-6 mb-10 text-sm text-left text-gray-600">
