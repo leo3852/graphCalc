@@ -45,13 +45,28 @@ export class MainComponent implements AfterViewInit {
     window.removeEventListener('resize', this.updateCanvasSize.bind(this)); // Eliminar el listener al destruir el componente
   }
 
+  // updateCanvasSize(): void {
+  //   if (window.innerWidth < 768) {
+  //     this.canvasWidth = 300;
+  //     this.canvasHeight = 300;
+  //   } if (window.innerWidth < 1024) {
+  //     this.canvasWidth = window.innerWidth - 600;
+  //     this.canvasHeight = window.innerWidth - 600;
+  //   } if (window.innerWidth < 1300) {
+  //     this.canvasWidth = window.innerWidth - 900;
+  //     this.canvasHeight = window.innerWidth - 900;
+  //   }
+  // }
   updateCanvasSize(): void {
-    if (window.innerWidth < 768) {
-      this.canvasWidth = 300;
-      this.canvasHeight = 300;
+    const container = document.getElementById('chartContainer'); // Asegúrate de que el contenedor tenga un ID
+    if (container) {
+      // Ajustar el tamaño del canvas al ancho del contenedor
+      this.canvasWidth = container.offsetWidth;
+      this.canvasHeight = container.offsetWidth; // Mantener una proporción razonable
     } else {
-      this.canvasWidth = 600;
-      this.canvasHeight = 600;
+      // Fallback: usar el ancho de la ventana si no hay contenedor
+      this.canvasWidth = Math.min(window.innerWidth - 50, 800); // Dejar un margen de 50px
+      this.canvasHeight = Math.min(window.innerWidth - 50, 800); // Mantener una proporción razonable
     }
   }
   

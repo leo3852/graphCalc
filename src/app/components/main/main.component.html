@@ -1,4 +1,4 @@
-<div class="mt-5 max-w-4xl mx-auto text-center p-6 rounded-lg shadow-md bg-white">
+<div class="mt-5 max-w-4xl mx-auto text-center p-6  bg-white">
     <!-- Step 1: Asignación de etiquetas -->
     <div *ngIf="currentStep === 1" class="h-full">
         <div class="flex items-center justify-center mb-10 mt-10">
@@ -173,7 +173,7 @@
         <p class="mb-10 text-lg text-gray-600">Se ingresaron los puntos.</p>
 
         <!-- Lienzo para la gráfica -->
-        <div class="mt-10 mb-20 flex justify-center items-center cursor-grabbing">
+        <div id="chartContainer" class="mt-10 mb-20 flex justify-center items-center cursor-grabbing">
             <canvas id="chartCanvas" [width]="canvasWidth" [height]="canvasHeight"></canvas>
         </div>
 
