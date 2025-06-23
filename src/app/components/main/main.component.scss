@@ -16,7 +16,7 @@
       height: 400px;
     }
   }
-  
+
   select {
     -webkit-appearance: none; /* Eliminar el estilo predeterminado en navegadores WebKit */
     -moz-appearance: none;    /* Eliminar el estilo predeterminado en navegadores Firefox */
@@ -26,3 +26,18 @@
     outline: none;            /* Eliminar el contorno */
     cursor: pointer;          /* Cambiar el cursor a puntero */
   }
+
+  .accordion-button {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .accordion-body {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+.custom-hover-shadow:hover {
+box-shadow: 0 0 15px 5px rgba(255, 0, 106, 0.7);
+transition: box-shadow 0.3s ease-in-out;
+}

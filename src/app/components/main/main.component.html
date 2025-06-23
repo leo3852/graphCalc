@@ -21,7 +21,7 @@
                             class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500" 
                             placeholder="Unidad" maxlength="8">
                         <div class="relative ml-2">
-                            <button type="button" class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="button" class="w-8 h-8 bg-neutral-700 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 x²
                             </button>
                             <select class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" 
@@ -56,7 +56,7 @@
                             class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500" 
                             placeholder="Unidad" maxlength="8">
                         <div class="relative ml-2">
-                            <button type="button" class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <button type="button" class="w-8 h-8 bg-neutral-700 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 x²
                             </button>
                             <select class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" 
@@ -84,7 +84,8 @@
             </div>
             <p *ngIf="showError && !labelX" class="text-red-500 text-sm">La etiqueta del eje X es requerida.</p>
             <p *ngIf="showError && !labelY" class="text-red-500 text-sm">La etiqueta del eje Y es requerida.</p>
-            <button type="button" class="mb-16 mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="assignLabels()">
+            <button type="button" class=" w-1/2 mb-16 mt-4 px-6 py-2 border-2 border-neutral-788 text-neutral-700 rounded-lg shadow-md hover:bg-neutral-100 focus:outline-none focus:ring-2 " 
+                (click)="assignLabels()">
                 Asignar etiquetas
             </button>
         </form>
@@ -170,7 +171,7 @@
         <!-- Step 3: Gráfica generada -->
     <div [class.hidden]="currentStep !== 3" class="text-center mt-10">
         <h2 class="text-2xl mb-1 text-gray-700">Gráfica generada</h2>
-        <p class="mb-10 text-lg text-gray-600">Se ingresaron los puntos.</p>
+        <p class="mb-10 text-lg text-gray-600">Se ingresaron los datos</p>
 
         <!-- Lienzo para la gráfica -->
         <div id="chartContainer" class="mt-10 mb-20 flex justify-center items-center cursor-grabbing">
@@ -188,35 +189,67 @@
             </div>
             <div>
                 <div class="flex justify-center items-center gap-4">
-                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateLinearGraph(); scrollToGraph() ">
+                    <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 custom-hover-shadow" 
+                        (click)="this.currentStep = 3; generateLinearGraph(); scrollToGraph() ">
                         Lineal
                     </button>
-                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generatePolynomialGraph(); scrollToGraph()">
+                    <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 custom-hover-shadow" 
+                        (click)="this.currentStep = 3; generatePolynomialGraph(); scrollToGraph()">
                         Polinómica
                     </button>
-                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-purple-500" (click)="this.currentStep = 3; generateExponentialGraph(); scrollToGraph()">
+                    <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-700  focus:outline-none focus:ring-2 focus:ring-purple-500 custom-hover-shadow"
+                        (click)="this.currentStep = 3; generateExponentialGraph(); scrollToGraph()">
                         Exponencial
                     </button>
                 </div>
                 <div class="flex justify-center items-center gap-4 mt-5 ">
-                    <button type="button" class="px-6 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateInversaGraph(); scrollToGraph() ">
+                    <button type="button" class="px-6 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-blue-500 custom-hover-shadow" 
+                        (click)="this.currentStep = 3; generateInversaGraph(); scrollToGraph() ">
                         Inversa
                     </button>
-                    <button type="button" class="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-green-400 hover:text-black focus:outline-none focus:ring-2 focus:ring-orange-500" (click)="this.currentStep = 3; generateLogaritmicGraph(); scrollToGraph()">
+                    <button type="button" class="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-orange-500 custom-hover-shadow" 
+                        (click)="this.currentStep = 3; generateLogaritmicGraph(); scrollToGraph()">
                         Logarítmica
                     </button>
                 </div>
-                <!-- Toggle para controlar si los ejes comienzan desde 0 -->
+                <!-- Botón para mostrar/ocultar configuraciones -->
                 <div class="flex justify-center items-center mt-5">
-                    <label class="flex items-center cursor-pointer">
-                        <p class="mr-2 text-gray-700">Empezar ejes desde 0</p>
-                        <input type="checkbox" [(ngModel)]="startFromZero" class="hidden" id="toggleStartFromZero">
-                        <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
-                            [class.bg-blue-500]="startFromZero" [class.bg-gray-300]="!startFromZero">
+                    <button type="button" class="flex justify-center items-center px-6 py-2 text-black rounded-full hover:border-2 hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500" 
+                    (click)="toggleSettings()">
+                       <span class="text-2xl mr-2">⚙</span> Avanzado
+                    </button>
+                </div>
+                <div class="flex justify-center items-center mt-5" *ngIf="showSettings">
+                    <div>
+                        <!-- Toggle para controlar si los ejes comienzan desde 0 -->
+                        <label class="flex items-center cursor-pointer mr-2">
+                            <p class="mr-2 text-gray-700">Ejes desde 0</p>
+                            <input type="checkbox" [(ngModel)]="startFromZero" class="hidden" id="toggleStartFromZero">
+                            <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
+                                [class.bg-blue-500]="startFromZero" [class.bg-gray-300]="!startFromZero">
+                                <div class="absolute top-0 left-0 w-5 h-5 bg-gray-100 rounded-full transform transition-transform duration-300"
+                                    [class.translate-x-5]="startFromZero"></div>
+                            </div>
+                        </label>
+                        
+                        <!-- Toggle para mostrar los puntos de corte -->
+                        <label class="flex items-center cursor-pointer">
+                            <p class="mr-2 text-gray-700">Mostrar cortes con ejes</p>
+                            <input type="checkbox" [(ngModel)]="showIntersections" class="hidden" id="toggleShowIntersections">
+                            <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
+                            [class.bg-blue-500]="showIntersections" [class.bg-gray-300]="!showIntersections">
                             <div class="absolute top-0 left-0 w-5 h-5 bg-white rounded-full transform transition-transform duration-300"
-                                [class.translate-x-5]="startFromZero"></div>
-                        </div>
-                    </label>
+                                [class.translate-x-5]="showIntersections"></div>
+                            </div>
+                        </label>
+
+                        <!-- Botón para modificar la cantidad de líneas en la cuadrícula -->
+                        <!-- <button type="button" class="px-6 py-2 bg-gray-800 text-white rounded-full shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                        (click)="modifyGridLines()">
+                            Cuadricula
+                        </button> -->
+
+                    </div>    
                 </div>
                 <!-- Toggle para alejar -->
                 <!-- <div class="flex justify-center items-center mt-5">
@@ -236,16 +269,15 @@
         
         <!-- Mostrar ecuación -->
         <div *ngIf="equation" class="mt-10 mb-10 md:text-xl text-center text-gray-700 p-6 border-2 rounded-full border-green-500 bg-green-50/50">
-            <p><strong class="mr-2">Ecuación:</strong> {{ equation }}</p>
+            <p class="mb-2">Ecuación:</p>
+            <p>{{ equation }}</p>
         </div>
 
         <!-- Línea divisoria -->
         <hr class="border-t border-gray-300 my-8">
 
 
-
-
-
+        
         <!-- Explicación de la ecuación -->
         <div class="mt-6 mb-10 text-sm text-left text-gray-600">
             <p><strong>¿Qué significa esta ecuación?</strong></p>
@@ -283,7 +315,28 @@
                 - El exponente controla la velocidad de crecimiento o decrecimiento de la gráfica.<br>
                 - Una tasa de crecimiento positiva indica un aumento exponencial, mientras que una negativa indica un decrecimiento exponencial.
             </p>
-        </div>
+            <!-- Explicación para gráfica inversa -->
+            <p *ngIf="graphType === 'inversa'">
+              La ecuación generada es una relación inversa entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Esto significa que a medida que <strong>{{ labelX }}</strong> aumenta, <strong>{{ labelY }}</strong> disminuye proporcionalmente. La gráfica tiene una forma hiperbólica.
+            </p>
+            <p *ngIf="graphType === 'inversa'" class="mt-4">
+              <strong>¿Cómo se interpretan los coeficientes?</strong><br>
+              - El coeficiente determina la escala de la curva.<br>
+              - Una relación inversa implica que el producto de <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong> es constante.<br>
+              - Si <strong>{{ labelX }}</strong> se acerca a cero, <strong>{{ labelY }}</strong> tiende a infinito.
+            </p>
+          
+            <!-- Explicación para gráfica logarítmica -->
+            <p *ngIf="graphType === 'logaritmica'">
+              La ecuación generada es una relación logarítmica entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Esto significa que <strong>{{ labelY }}</strong> crece de manera más lenta a medida que <strong>{{ labelX }}</strong> aumenta. Los coeficientes determinan la inclinación y el desplazamiento de la curva.
+            </p>
+            <p *ngIf="graphType === 'logaritmica'" class="mt-4">
+              <strong>¿Cómo se interpretan los coeficientes?</strong><br>
+              - El coeficiente inicial determina el valor base de <strong>{{ labelY }}</strong>.<br>
+              - El coeficiente del logaritmo controla la inclinación de la curva.<br>
+              - La gráfica no está definida para valores de <strong>{{ labelX }}</strong> menores o iguales a cero.
+            </p>
+          </div>
 
         <button type="button" class="mt-10 mb-16 px-6 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" (click)="resetForm()">
             Reiniciar
