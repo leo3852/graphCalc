@@ -615,12 +615,303 @@ export class MainComponent implements AfterViewInit {
   }
   
 
-  generateLogaritmicGraph() {
-    throw new Error('Method not implemented.');
+  generateLogaritmicGraph(): void {
+    this.graphType = 'logaritmica';
+  
+    // Verificar si hay suficientes datos para calcular la regresión
+    if (this.values.length < 2) {
+      console.error('Se necesitan al menos dos puntos para calcular la regresión logarítmica.');
+      return;
+    }
+  
+    // Transformar x a ln(x) y calcular la regresión lineal
+    const transformedValues = this.values.map(pair => ({ x: Math.log(pair.x), y: pair.y }));
+    const { m: B, b: A } = this.calculateLinearRegression(transformedValues);
+  
+    // Generar la ecuación logarítmica
+    this.equation = `y = ${A.toFixed(6)} + ${B.toFixed(6)} * ln(x)`;
+  
+    console.log('Ecuación generada:', this.equation);
+  
+    // Calcular los límites de los puntos originales
+    const originalMinX = Math.min(...this.values.map((pair) => pair.x));
+    const originalMaxX = Math.max(...this.values.map((pair) => pair.x));
+    const originalMinY = Math.min(...this.values.map((pair) => pair.y));
+    const originalMaxY = Math.max(...this.values.map((pair) => pair.y));
+  
+    // Agregar un margen alrededor de los puntos originales
+    const marginX = (originalMaxX - originalMinX) * 0.2; // 20% de margen
+    const marginY = (originalMaxY - originalMinY) * 0.2; // 20% de margen
+  
+    let initialMinX = originalMinX - marginX;
+    let initialMaxX = originalMaxX + marginX;
+    let initialMinY = originalMinY - marginY;
+    let initialMaxY = originalMaxY + marginY;
+  
+    // Respetar la lógica de startFromZero
+    if (this.startFromZero) {
+      initialMinX = 0;
+      initialMinY = 0;
+    }
+  
+    // Calcular los rangos de los ejes
+    const rangeX = initialMaxX - initialMinX;
+    const rangeY = initialMaxY - initialMinY;
+  
+    // Ajustar los rangos para que sean proporcionales
+    const maxRange = Math.max(rangeX, rangeY);
+    initialMaxX = initialMinX + maxRange;
+    initialMaxY = initialMinY + maxRange;
+  
+    // Calcular los extremos del eje X para extender la curva
+    const extendedMinX = initialMinX - 10; // Extender 10 unidades hacia la izquierda
+    const extendedMaxX = initialMaxX + 10; // Extender 10 unidades hacia la derecha
+  
+    // Generar puntos de la curva logarítmica (100 puntos entre extendedMinX y extendedMaxX)
+    const labels = Array.from({ length: 100 }, (_, i) => extendedMinX + (i * (extendedMaxX - extendedMinX) / 99));
+    const logaritmicData = labels.map((x) => ({ x, y: A + B * Math.log(x) })); // Generar puntos de la curva logarítmica
+  
+    if (this.chart) {
+      this.chart.destroy(); // Destruye la gráfica anterior si existe
+    }
+  
+    const canvas = document.getElementById('chartCanvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Unable to get 2D context');
+      return;
+    }
+  
+    this.chart = new Chart(ctx, {
+      type: 'scatter',
+      data: {
+        datasets: [
+          {
+            label: this.equation,
+            data: logaritmicData, // Puntos calculados de la curva logarítmica
+            borderColor: 'orange',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0, // No mostrar puntos
+            showLine: true, // Conectar los puntos con una línea
+            tension: 0.4, // Curva suave
+          },
+          {
+            label: 'Puntos Originales',
+            data: this.values, // Mostrar los puntos originales
+            borderColor: 'red',
+            backgroundColor: 'red',
+            borderWidth: 0,
+            pointRadius: 5, // Tamaño de los puntos
+            pointStyle: 'circle', // Estilo de los puntos
+            showLine: false // No conectar los puntos con una línea
+          }
+        ]
+      },
+      options: {
+        responsive: false,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true
+          },
+          zoom: {
+            pan: {
+              enabled: true, // Habilitar el movimiento (pan)
+              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+            },
+            zoom: {
+              wheel: {
+                enabled: true // Habilitar zoom con la rueda del ratón
+              },
+              pinch: {
+                enabled: true // Habilitar zoom con gestos táctiles
+              },
+              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: `${this.labelX} (${this.unitX ? this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
+            },
+            min: initialMinX,
+            max: initialMaxX, // Forzar que el eje x termine en el máximo valor ajustado
+            grid: {
+              drawTicks: true,
+              color: (context) => {
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje X en gris oscuro en 0
+              }
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
+            },
+            min: initialMinY,
+            max: initialMaxY, // Forzar que el eje y termine en el máximo valor ajustado
+            grid: {
+              drawTicks: true,
+              color: (context) => {
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje Y en gris oscuro en 0
+              }
+            }
+          }
+        }
+      }
+    });
   }
   
-  generateInversaGraph() {
-    throw new Error('Method not implemented.');
+  generateInversaGraph(): void {
+    this.graphType = 'inversa';
+  
+    // Verificar si hay suficientes datos para calcular la regresión
+    if (this.values.length < 2) {
+      console.error('Se necesitan al menos dos puntos para calcular la regresión inversa.');
+      return;
+    }
+  
+    // Calcular el coeficiente A para la ecuación y = A * 1/x
+    const sumXInv = this.values.reduce((acc, pair) => acc + 1 / pair.x, 0);
+    const sumY = this.values.reduce((acc, pair) => acc + pair.y, 0);
+    const A = sumY / sumXInv;
+  
+    // Generar la ecuación inversa
+    this.equation = `y = ${A.toFixed(6)} * 1/x`;
+
+    // Calcular los límites de los puntos originales
+    const originalMinX = Math.min(...this.values.map((pair) => pair.x));
+    const originalMaxX = Math.max(...this.values.map((pair) => pair.x));
+    const originalMinY = Math.min(...this.values.map((pair) => pair.y));
+    const originalMaxY = Math.max(...this.values.map((pair) => pair.y));
+  
+    // Agregar un margen alrededor de los puntos originales
+    const marginX = (originalMaxX - originalMinX) * 0.2; // 20% de margen
+    const marginY = (originalMaxY - originalMinY) * 0.2; // 20% de margen
+  
+    let initialMinX = originalMinX - marginX;
+    let initialMaxX = originalMaxX + marginX;
+    let initialMinY = originalMinY - marginY;
+    let initialMaxY = originalMaxY + marginY;
+  
+    // Respetar la lógica de startFromZero
+    if (this.startFromZero) {
+      initialMinX = 0;
+      initialMinY = 0;
+    }
+  
+    // Calcular los rangos de los ejes
+    const rangeX = initialMaxX - initialMinX;
+    const rangeY = initialMaxY - initialMinY;
+  
+    // Ajustar los rangos para que sean proporcionales
+    const maxRange = Math.max(rangeX, rangeY);
+    initialMaxX = initialMinX + maxRange;
+    initialMaxY = initialMinY + maxRange;
+  
+    // Calcular los extremos del eje X para extender la curva
+    const extendedMinX = initialMinX - 10; // Extender 10 unidades hacia la izquierda
+    const extendedMaxX = initialMaxX + 10; // Extender 10 unidades hacia la derecha
+  
+    // Generar puntos de la curva inversa (100 puntos entre extendedMinX y extendedMaxX)
+    const labels = Array.from({ length: 100 }, (_, i) => extendedMinX + (i * (extendedMaxX - extendedMinX) / 99));
+    const inversaData = labels.map((x) => ({ x, y: A / x })); // Generar puntos de la curva inversa
+  
+    if (this.chart) {
+      this.chart.destroy(); // Destruye la gráfica anterior si existe
+    }
+  
+    const canvas = document.getElementById('chartCanvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      console.error('Unable to get 2D context');
+      return;
+    }
+  
+    this.chart = new Chart(ctx, {
+      type: 'scatter',
+      data: {
+        datasets: [
+          {
+            label: this.equation,
+            data: inversaData, // Puntos calculados de la curva inversa
+            borderColor: 'purple',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0, // No mostrar puntos
+            showLine: true, // Conectar los puntos con una línea
+            tension: 0.4, // Curva suave
+          },
+          {
+            label: 'Puntos Originales',
+            data: this.values, // Mostrar los puntos originales
+            borderColor: 'red',
+            backgroundColor: 'red',
+            borderWidth: 0,
+            pointRadius: 5, // Tamaño de los puntos
+            pointStyle: 'circle', // Estilo de los puntos
+            showLine: false // No conectar los puntos con una línea
+          }
+        ]
+      },
+      options: {
+        responsive: false,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true
+          },
+          zoom: {
+            pan: {
+              enabled: true, // Habilitar el movimiento (pan)
+              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+            },
+            zoom: {
+              wheel: {
+                enabled: true // Habilitar zoom con la rueda del ratón
+              },
+              pinch: {
+                enabled: true // Habilitar zoom con gestos táctiles
+              },
+              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: `${this.labelX} (${this.unitX ? this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
+            },
+            min: initialMinX,
+            max: initialMaxX, // Forzar que el eje x termine en el máximo valor ajustado
+            grid: {
+              drawTicks: true,
+              color: (context) => {
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje X en gris oscuro en 0
+              }
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
+            },
+            min: initialMinY,
+            max: initialMaxY, // Forzar que el eje y termine en el máximo valor ajustado
+            grid: {
+              drawTicks: true,
+              color: (context) => {
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje Y en gris oscuro en 0
+              }
+            }
+          }
+        }
+      }
+    });
   }
 
   calculateLinearRegression(values: { x: number, y: number }[]): { m: number, b: number } {
@@ -660,6 +951,11 @@ export class MainComponent implements AfterViewInit {
   calculateExponentialRegression(values: { x: number, y: number }[]): { A: number, B: number } {
     const n = values.length;
   
+    // Verificar que no haya valores de y <= 0
+    if (values.some(pair => pair.y <= 0)) {
+      throw new Error('Todos los valores de y deben ser mayores que 0 para calcular la regresión exponencial.');
+    }
+  
     // Transformar y a ln(y)
     const sumX = values.reduce((acc, pair) => acc + pair.x, 0);
     const sumLnY = values.reduce((acc, pair) => acc + Math.log(pair.y), 0);
@@ -668,10 +964,15 @@ export class MainComponent implements AfterViewInit {
   
     // Calcular los coeficientes de la regresión lineal
     const denominator = n * sumX2 - sumX * sumX;
+    if (denominator === 0) {
+      throw new Error('No se puede calcular la regresión exponencial: denominador es 0.');
+    }
+  
     const lnA = (sumLnY * sumX2 - sumX * sumXlnY) / denominator;
-    const B = Math.exp((n * sumXlnY - sumX * sumLnY) / denominator);
+    const lnB = (n * sumXlnY - sumX * sumLnY) / denominator;
   
     const A = Math.exp(lnA); // Convertir ln(A) a A
+    const B = Math.exp(lnB); // Convertir ln(B) a B
   
     return { A, B };
   }
