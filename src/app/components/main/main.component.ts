@@ -161,14 +161,26 @@ export class MainComponent implements AfterViewInit {
               display: true,
               text: `${this.labelX} (${this.unitX ?this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
             },
-            min: 0 // Forzar que el eje x comience en 0
+            min: 0, // Forzar que el eje x comience en 0
+            grid: {
+              drawTicks: true,
+              color: (context) => {
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje Y en gris oscuro en 0
+              }
+            }
           },
           y: {
             title: {
               display: true,
               text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
             },
-            min: 0 // Forzar que el eje y comience en 0
+            min: 0, // Forzar que el eje y comience en 0
+            grid: {
+              drawTicks: true,
+              color: (context) => {
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje Y en gris oscuro en 0
+              }
+            }
           }
         }
       }
