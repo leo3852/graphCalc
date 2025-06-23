@@ -467,54 +467,93 @@ export class MainComponent implements AfterViewInit {
 
   generateExponentialGraph(): void {
     this.graphType = 'exponencial';
-    const { A, B, C } = this.calculateExponentialRegression(this.values);
-
+  
+    // Verificar si hay suficientes datos para calcular la regresión
+    if (this.values.length < 2) {
+      console.error('Se necesitan al menos dos puntos para calcular la regresión exponencial.');
+      return;
+    }
+  
+    // Calcular los coeficientes de la regresión exponencial
+    const { A, B } = this.calculateExponentialRegression(this.values);
+  
     // Generar la ecuación exponencial
-    this.equation = `y = ${A.toFixed(2)} * e^(${B.toFixed(4)}x) ${C >= 0 ? '+ ' : '- '} ${Math.abs(C).toFixed(4)}`;
-
-    const minX = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.x)) : 0;
-    const minY = !this.startFromZero ? Math.min(...this.values.map((pair) => pair.y)) : 0;
-
-    const maxX = Math.max(...this.values.map((pair) => pair.x));
-    const maxY = Math.max(...this.values.map((pair) => pair.y));
-    const labels = Array.from({ length: Math.ceil((maxX - minX) / 10) + 1 }, (_, i) => minX + i * 10);
-    const exponentialData = labels.map((x) => ({ x, y: A * Math.exp(B * x) + C })); // Generar puntos de la curva exponencial
-
+    this.equation = `y = ${A.toFixed(6)} * ${B.toFixed(6)}^x`;
+  
+    console.log('Ecuación generada:', this.equation);
+  
+    // Calcular los límites de los puntos originales
+    const originalMinX = Math.min(...this.values.map((pair) => pair.x));
+    const originalMaxX = Math.max(...this.values.map((pair) => pair.x));
+    const originalMinY = Math.min(...this.values.map((pair) => pair.y));
+    const originalMaxY = Math.max(...this.values.map((pair) => pair.y));
+  
+    // Agregar un margen alrededor de los puntos originales
+    const marginX = (originalMaxX - originalMinX) * 0.2; // 20% de margen
+    const marginY = (originalMaxY - originalMinY) * 0.2; // 20% de margen
+  
+    let initialMinX = originalMinX - marginX;
+    let initialMaxX = originalMaxX + marginX;
+    let initialMinY = originalMinY - marginY;
+    let initialMaxY = originalMaxY + marginY;
+  
+    // Respetar la lógica de startFromZero
+    if (this.startFromZero) {
+      initialMinX = 0;
+      initialMinY = 0;
+    }
+  
+    // Calcular los rangos de los ejes
+    const rangeX = initialMaxX - initialMinX;
+    const rangeY = initialMaxY - initialMinY;
+  
+    // Ajustar los rangos para que sean proporcionales
+    const maxRange = Math.max(rangeX, rangeY);
+    initialMaxX = initialMinX + maxRange;
+    initialMaxY = initialMinY + maxRange;
+  
+    // Calcular los extremos del eje X para extender la curva
+    const extendedMinX = initialMinX - 10; // Extender 10 unidades hacia la izquierda
+    const extendedMaxX = initialMaxX + 10; // Extender 10 unidades hacia la derecha
+  
+    // Generar puntos de la curva exponencial (100 puntos entre extendedMinX y extendedMaxX)
+    const labels = Array.from({ length: 100 }, (_, i) => extendedMinX + (i * (extendedMaxX - extendedMinX) / 99));
+    const exponentialData = labels.map((x) => ({ x, y: A * Math.pow(B, x) })); // Generar puntos de la curva exponencial
+  
     if (this.chart) {
       this.chart.destroy(); // Destruye la gráfica anterior si existe
     }
-
+  
     const canvas = document.getElementById('chartCanvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.error('Unable to get 2D context');
       return;
     }
-
+  
     this.chart = new Chart(ctx, {
       type: 'scatter',
       data: {
         datasets: [
           {
             label: this.equation,
-            data: exponentialData,
+            data: exponentialData, // Puntos calculados de la curva exponencial
             borderColor: 'green',
             backgroundColor: 'transparent',
             borderWidth: 2,
-            pointRadius: 0,
-            showLine: true,
-            tension: 0.4,
-            clip: false
+            pointRadius: 0, // No mostrar puntos
+            showLine: true, // Conectar los puntos con una línea
+            tension: 0.4, // Curva suave
           },
           {
             label: 'Puntos Originales',
-            data: this.values,
+            data: this.values, // Mostrar los puntos originales
             borderColor: 'red',
             backgroundColor: 'red',
             borderWidth: 0,
-            pointRadius: 5,
-            pointStyle: 'circle',
-            showLine: false
+            pointRadius: 5, // Tamaño de los puntos
+            pointStyle: 'circle', // Estilo de los puntos
+            showLine: false // No conectar los puntos con una línea
           }
         ]
       },
@@ -545,28 +584,28 @@ export class MainComponent implements AfterViewInit {
           x: {
             title: {
               display: true,
-              text: `${this.labelX} (${this.unitX ?this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
+              text: `${this.labelX} (${this.unitX ? this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
             },
-            min: minX,
-            max: maxX,
+            min: initialMinX,
+            max: initialMaxX, // Forzar que el eje x termine en el máximo valor ajustado
             grid: {
               drawTicks: true,
               color: (context) => {
-                return context.tick.value === 0 ? 'black' : '#e0e0e0';
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje X en gris oscuro en 0
               }
             }
           },
           y: {
             title: {
               display: true,
-              text: `${this.labelY} (${this.unitY ?this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
+              text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
             },
-            min: minY,
-            max: maxY,
+            min: initialMinY,
+            max: initialMaxY, // Forzar que el eje y termine en el máximo valor ajustado
             grid: {
               drawTicks: true,
               color: (context) => {
-                return context.tick.value === 0 ? 'black' : '#e0e0e0';
+                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje Y en gris oscuro en 0
               }
             }
           }
@@ -618,25 +657,23 @@ export class MainComponent implements AfterViewInit {
     return { a, b, c };
   }
 
-  calculateExponentialRegression(values: { x: number, y: number }[]): { A: number, B: number, C: number } {
+  calculateExponentialRegression(values: { x: number, y: number }[]): { A: number, B: number } {
     const n = values.length;
+  
+    // Transformar y a ln(y)
     const sumX = values.reduce((acc, pair) => acc + pair.x, 0);
-    const sumY = values.reduce((acc, pair) => acc + pair.y, 0);
     const sumLnY = values.reduce((acc, pair) => acc + Math.log(pair.y), 0);
     const sumX2 = values.reduce((acc, pair) => acc + pair.x * pair.x, 0);
     const sumXlnY = values.reduce((acc, pair) => acc + pair.x * Math.log(pair.y), 0);
   
-    // Configurar la matriz para resolver el sistema de ecuaciones
-    const matrix = [
-      [n, sumX, sumY, sumLnY],
-      [sumX, sumX2, sumY, sumXlnY],
-      [sumY, sumY, n, sumY]
-    ];
+    // Calcular los coeficientes de la regresión lineal
+    const denominator = n * sumX2 - sumX * sumX;
+    const lnA = (sumLnY * sumX2 - sumX * sumXlnY) / denominator;
+    const B = Math.exp((n * sumXlnY - sumX * sumLnY) / denominator);
   
-    const [lnA, B, C] = this.solveLinearSystem(matrix); // Resolver el sistema de ecuaciones
     const A = Math.exp(lnA); // Convertir ln(A) a A
   
-    return { A, B, C };
+    return { A, B };
   }
 
   // solveLinearSystem(matrix: number[][]): number[] {
