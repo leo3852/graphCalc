@@ -7,26 +7,26 @@
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
         </div>
-        <h2 class="text-2xl mb-4 text-gray-700">Datos para la gráfica</h2>
-        <p class="mb-5">Ingrese las etiquetas y unidades de medida (opcional):</p>
+        <h2 class="text-2xl mb-4 text-gray-700">{{ 'MAIN.STEP_1_TITLE' | translate }}</h2>
+        <p class="mb-5">{{ 'MAIN.STEP_1_DESCRIPTION' | translate }}</p>
         <form class="space-y-4 mb-16">
             <div class="flex flex-wrap gap-4 justify-center mb-5">
                 <!-- Input para etiqueta del eje X -->
                 <div class="w-full md:w-1/2 flex items-center gap-2">
                     <input id="labelX" type="text" [(ngModel)]="labelX" name="labelX" 
                         class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                        placeholder="Etiqueta del eje X" maxlength="15">
+                        placeholder="{{ 'MAIN.LABEL_X_PLACEHOLDER' | translate }}" maxlength="15">
                     <div class="relative flex items-center">
                         <input id="unitX" type="text" [(ngModel)]="unitX" name="unitX" 
                             class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500" 
-                            placeholder="Unidad" maxlength="8">
+                            placeholder="{{ 'MAIN.UNIT_PLACEHOLDER' | translate }}" maxlength="8">
                         <div class="relative ml-2">
                             <button type="button" class="w-8 h-8 bg-neutral-700 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 x²
                             </button>
                             <select class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" 
                                 (change)="onUnitChange($event, 'unitX')">
-                                <option value="">Agregar</option>
+                                <option value="">{{ 'MAIN.ADD' | translate }}</option>
                                 <option value="²">² (superíndice)</option>
                                 <option value="³">³ (superíndice)</option>
                                 <option value="ₓ">ₓ (subíndice x)</option>
@@ -35,13 +35,37 @@
                                 <option value="β">β (beta)</option>
                                 <option value="γ">γ (gamma)</option>
                                 <option value="δ">δ (delta)</option>
+                                <option value="ε">ε (epsilon)</option>
+                                <option value="ζ">ζ (zeta)</option>
+                                <option value="η">η (eta)</option>
                                 <option value="θ">θ (theta)</option>
+                                <option value="ι">ι (iota)</option>
+                                <option value="κ">κ (kappa)</option>
                                 <option value="λ">λ (lambda)</option>
                                 <option value="μ">μ (mu)</option>
-                                <option value="Ω">Ω (omega)</option>
+                                <option value="ν">ν (nu)</option>
+                                <option value="ξ">ξ (xi)</option>
+                                <option value="ο">ο (omicron)</option>
                                 <option value="π">π (pi)</option>
+                                <option value="ρ">ρ (rho)</option>
                                 <option value="σ">σ (sigma)</option>
-                                <option value="ε">ε (epsilon)</option>
+                                <option value="τ">τ (tau)</option>
+                                <option value="υ">υ (upsilon)</option>
+                                <option value="φ">φ (phi)</option>
+                                <option value="χ">χ (chi)</option>
+                                <option value="ψ">ψ (psi)</option>
+                                <option value="ω">ω (omega)</option>
+                                <option value="Γ">Γ</option>
+                                <option value="Δ">Δ</option>
+                                <option value="Ε">Ε</option>
+                                <option value="Θ">Θ</option>
+                                <option value="Λ">Λ</option>
+                                <option value="Ξ">Ξ</option>
+                                <option value="Π">Π</option>
+                                <option value="Σ">Σ</option>
+                                <option value="Φ">Φ</option>
+                                <option value="Ψ">Ψ</option>
+                                <option value="Ω">Ω</option>
                             </select>
                         </div>
                     </div>
@@ -50,18 +74,18 @@
                 <div class="w-full md:w-1/2 flex items-center gap-2">
                     <input id="labelY" type="text" [(ngModel)]="labelY" name="labelY" 
                         class="w-full p-2 border border-cyan-500 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 " 
-                        placeholder="Etiqueta del eje Y" maxlength="15">
+                        placeholder="{{ 'MAIN.LABEL_Y_PLACEHOLDER' | translate }}" maxlength="15">
                     <div class="relative flex items-center">
                         <input id="unitY" type="text" [(ngModel)]="unitY" name="unitY" 
                             class="w-24 p-2 border border-gray-300 bg-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-sm placeholder:text-gray-500" 
-                            placeholder="Unidad" maxlength="8">
+                            placeholder="{{ 'MAIN.UNIT_PLACEHOLDER' | translate }}" maxlength="8">
                         <div class="relative ml-2">
                             <button type="button" class="w-8 h-8 bg-neutral-700 text-white rounded-full flex items-center justify-center shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 x²
                             </button>
                             <select class="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer" 
                                 (change)="onUnitChange($event, 'unitY')">
-                                <option value="">Agregar</option>
+                                <option value="">{{ 'MAIN.ADD' | translate }}</option>
                                 <option value="²">² (superíndice)</option>
                                 <option value="³">³ (superíndice)</option>
                                 <option value="ₓ">ₓ (subíndice x)</option>
@@ -70,23 +94,47 @@
                                 <option value="β">β (beta)</option>
                                 <option value="γ">γ (gamma)</option>
                                 <option value="δ">δ (delta)</option>
+                                <option value="ε">ε (epsilon)</option>
+                                <option value="ζ">ζ (zeta)</option>
+                                <option value="η">η (eta)</option>
                                 <option value="θ">θ (theta)</option>
+                                <option value="ι">ι (iota)</option>
+                                <option value="κ">κ (kappa)</option>
                                 <option value="λ">λ (lambda)</option>
                                 <option value="μ">μ (mu)</option>
-                                <option value="Ω">Ω (omega)</option>
+                                <option value="ν">ν (nu)</option>
+                                <option value="ξ">ξ (xi)</option>
+                                <option value="ο">ο (omicron)</option>
                                 <option value="π">π (pi)</option>
+                                <option value="ρ">ρ (rho)</option>
                                 <option value="σ">σ (sigma)</option>
-                                <option value="ε">ε (epsilon)</option>
+                                <option value="τ">τ (tau)</option>
+                                <option value="υ">υ (upsilon)</option>
+                                <option value="φ">φ (phi)</option>
+                                <option value="χ">χ (chi)</option>
+                                <option value="ψ">ψ (psi)</option>
+                                <option value="ω">ω (omega)</option>
+                                <option value="Γ">Γ</option>
+                                <option value="Δ">Δ</option>
+                                <option value="Ε">Ε</option>
+                                <option value="Θ">Θ</option>
+                                <option value="Λ">Λ</option>
+                                <option value="Ξ">Ξ</option>
+                                <option value="Π">Π</option>
+                                <option value="Σ">Σ</option>
+                                <option value="Φ">Φ</option>
+                                <option value="Ψ">Ψ</option>
+                                <option value="Ω">Ω</option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
-            <p *ngIf="showError && !labelX" class="text-red-500 text-sm">La etiqueta del eje X es requerida.</p>
-            <p *ngIf="showError && !labelY" class="text-red-500 text-sm">La etiqueta del eje Y es requerida.</p>
+            <p *ngIf="showError && !labelX" class="text-red-500 text-sm">{{ 'MAIN.ERROR_LABEL_X_REQUIRED' | translate }}</p>
+            <p *ngIf="showError && !labelY" class="text-red-500 text-sm">{{ 'MAIN.ERROR_LABEL_Y_REQUIRED' | translate }}</p>
             <button type="button" class=" w-1/2 mb-16 mt-4 px-6 py-2 border-2 border-neutral-788 text-neutral-700 rounded-lg shadow-md hover:bg-neutral-100 focus:outline-none focus:ring-2 " 
                 (click)="assignLabels()">
-                Asignar etiquetas
+                {{ 'MAIN.ASSIGN_LABELS' | translate }}
             </button>
         </form>
     </div>
@@ -100,21 +148,21 @@
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full mr-2">3</span>
             <span class="bg-gray-300 text-white text-lg font-bold w-8 h-8 flex items-center justify-center rounded-full">4</span>
         </div>
-        <h2 class="text-2xl mb-4 text-gray-700 font-light ">Inserte valores para graficar</h2>
-        <p class="text-sm md:hidden text-gray-600">Valores en {{labelX}} ({{unitX ? unitX : 'Unidad'}}) y {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</p>
+        <h2 class="text-2xl mb-4 text-gray-700 font-light ">{{ 'MAIN.INSERT_VALUES' | translate }}</h2>
+        <p class="text-sm md:hidden text-gray-600">{{'MAIN.STEP_2_DESCRIPTION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' } }}</p>
         <form class="space-y-6 flex items-center justify-center mt-5 md:mt-10">
             <div class="flex items-center gap-6 justify-center">
                 <div>
                     <!-- Inputs organizados horizontalmente -->
                     <div class="flex items-center gap-4 w-full">
-                        <label for="valueX" class="text-sm w-full text-gray-700 max-md:hidden md:block">Valor en {{labelX}} ({{unitX ? unitX : 'Unidad'}}):</label>
+                        <label for="valueX" class="text-sm w-full text-gray-700 max-md:hidden md:block">{{ 'MAIN.LABEL_VALUE_X' | translate:{ labelX: labelX, unitX: unitX || 'Unidad' } }}</label>
                         <input id="valueX" type="number" inputmode="numeric" 
                         [(ngModel)]="valueX" name="valueX" 
                         class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="{{labelX}}">
                     </div>
                     <div class="flex items-center gap-4 w-full">
-                        <label for="valueY" class="text-sm text-gray-700  max-md:hidden md:block">Valor en {{labelY}} ({{unitY ? unitY : 'Unidad'}}):</label>
+                        <label for="valueY" class="text-sm text-gray-700  max-md:hidden md:block">{{ 'MAIN.LABEL_VALUE_Y' | translate:{ labelY: labelY, unitY: unitY || 'Unidad' } }}</label>
                         <input id="valueY" type="number" inputmode="numeric" 
                         [(ngModel)]="valueY" name="valueY" 
                         class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
@@ -127,14 +175,14 @@
                 </button>
             </div>
         </form>
-        <p class="mt-20 mb-10 text-center text-lg text-gray-500 font-light"  *ngIf="values.length == 0">Inserte valores para generar</p>
+        <p class="mt-20 mb-10 text-center text-lg text-gray-500 font-light"  *ngIf="values.length == 0">{{ 'MAIN.INSERT_VALUES' | translate }}</p>
         <table class="mt-10 mb-10 w-full border-collapse border border-gray-300" *ngIf="values.length > 0">
-            <caption class="text-lg font-semibold text-gray-700 mb-2">Valores ingresados</caption>
+            <caption class="text-lg font-semibold text-gray-700 mb-2">{{ 'MAIN.CAPTION_ENTERED_VALUES' | translate }}</caption>
             <thead>
                 <tr>
-                    <th class="border border-gray-300 px-4 py-2 w-20">{{labelX}}({{unitX ? unitX : 'Unidad'}})</th>
-                    <th class="border border-gray-300 px-4 py-2 w-20">{{labelY}}({{unitY ? unitY : 'Unidad'}})</th>
-                    <th class="border border-gray-300 px-4 py-2 w-10">Eliminar</th>
+                    <th class="border border-gray-300 px-4 py-2 w-20">{{ 'MAIN.COLUMN_X' | translate:{ labelX: labelX, unitX: unitX || 'Unidad' }  }}</th>
+                    <th class="border border-gray-300 px-4 py-2 w-20">{{ 'MAIN.COLUMN_Y' | translate:{ labelY: labelY, unitY: unitY || 'Unidad' }  }}</th>
+                    <th class="border border-gray-300 px-4 py-2 w-10">{{ 'MAIN.COLUMN_DELETE' | translate }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -161,7 +209,7 @@
             <!-- Botones para seleccionar el tipo de gráfica -->
             <div class="mb-24">  
                 <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500" (click)="this.currentStep = 3; generateGraph(); scrollToGraph()">
-                    Generar
+                    {{ 'MAIN.GENERATE' | translate }}
                 </button>
             </div> 
         </div>
@@ -170,8 +218,8 @@
         
         <!-- Step 3: Gráfica generada -->
     <div [class.hidden]="currentStep !== 3" class="text-center mt-10">
-        <h2 class="text-2xl mb-1 text-gray-700">Gráfica generada</h2>
-        <p class="mb-10 text-lg text-gray-600">Se ingresaron los datos</p>
+        <h2 class="text-2xl mb-1 text-gray-700">{{ 'MAIN.STEP_3_TITLE' | translate }}</h2>
+        <p class="mb-10 text-lg text-gray-600">{{ 'MAIN.STEP_3_DESCRIPTION' | translate }}</p>
 
         <!-- Lienzo para la gráfica -->
         <div id="chartContainer" class="mt-10 mb-20 flex justify-center items-center cursor-grabbing">
@@ -191,39 +239,39 @@
                 <div class="flex justify-center items-center gap-4">
                     <button type="button" class="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 custom-hover-shadow" 
                         (click)="this.currentStep = 3; generateLinearGraph(); scrollToGraph() ">
-                        Lineal
+                        {{ 'MAIN.BUTTON_LINEAR' | translate }}
                     </button>
                     <button type="button" class="px-6 py-2 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-orange-500 custom-hover-shadow" 
                         (click)="this.currentStep = 3; generatePolynomialGraph(); scrollToGraph()">
-                        Polinómica
+                        {{ 'MAIN.BUTTON_POLYNOMIAL' | translate }}
                     </button>
                     <button type="button" class="px-6 py-2 bg-purple-500 text-white rounded-lg shadow-md hover:bg-purple-700  focus:outline-none focus:ring-2 focus:ring-purple-500 custom-hover-shadow"
                         (click)="this.currentStep = 3; generateExponentialGraph(); scrollToGraph()">
-                        Exponencial
+                        {{ 'MAIN.BUTTON_EXPONENTIAL' | translate }}
                     </button>
                 </div>
                 <div class="flex justify-center items-center gap-4 mt-5 ">
                     <button type="button" class="px-6 py-2 bg-indigo-500 text-white rounded-lg shadow-md hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-blue-500 custom-hover-shadow" 
                         (click)="this.currentStep = 3; generateInversaGraph(); scrollToGraph() ">
-                        Inversa
+                        {{ 'MAIN.BUTTON_INVERSE' | translate }}
                     </button>
                     <button type="button" class="px-6 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-orange-500 custom-hover-shadow" 
                         (click)="this.currentStep = 3; generateLogaritmicGraph(); scrollToGraph()">
-                        Logarítmica
+                        {{ 'MAIN.BUTTON_LOGARITHMIC' | translate }}
                     </button>
                 </div>
                 <!-- Botón para mostrar/ocultar configuraciones -->
                 <div class="flex justify-center items-center mt-5">
                     <button type="button" class="flex justify-center items-center px-6 py-2 text-black rounded-full hover:border-2 hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500" 
                     (click)="toggleSettings()">
-                       <span class="text-2xl mr-2">⚙</span> Avanzado
+                        <span class="text-2xl mr-2">⚙</span> {{ 'MAIN.SETTINGS' | translate }}
                     </button>
                 </div>
                 <div class="flex justify-center items-center mt-5" *ngIf="showSettings">
-                    <div>
+                    <div class="flex justify-center gap-4">
                         <!-- Toggle para controlar si los ejes comienzan desde 0 -->
                         <label class="flex items-center cursor-pointer mr-2">
-                            <p class="mr-2 text-gray-700">Ejes desde 0</p>
+                            <p class="mr-2 text-gray-700">{{ 'MAIN.AXIS_FROM_ZERO' | translate }}</p>
                             <input type="checkbox" [(ngModel)]="startFromZero" class="hidden" id="toggleStartFromZero">
                             <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
                                 [class.bg-blue-500]="startFromZero" [class.bg-gray-300]="!startFromZero">
@@ -234,7 +282,7 @@
                         
                         <!-- Toggle para mostrar los puntos de corte -->
                         <label class="flex items-center cursor-pointer">
-                            <p class="mr-2 text-gray-700">Mostrar cortes con ejes</p>
+                            <p class="mr-2 text-gray-700">{{ 'MAIN.AXIS_INTERSECTIONS' | translate }}</p>
                             <input type="checkbox" [(ngModel)]="showIntersections" class="hidden" id="toggleShowIntersections">
                             <div class="w-10 h-5 bg-gray-300 rounded-full relative transition-all duration-300"
                             [class.bg-blue-500]="showIntersections" [class.bg-gray-300]="!showIntersections">
@@ -269,7 +317,7 @@
         
         <!-- Mostrar ecuación -->
         <div *ngIf="equation" class="mt-10 mb-10 md:text-xl text-center text-gray-700 p-6 border-2 rounded-full border-green-500 bg-green-50/50">
-            <p class="mb-2">Ecuación:</p>
+            <p class="mb-2">{{ 'MAIN.EQUATION' | translate }}</p>
             <p>{{ equation }}</p>
         </div>
 
@@ -280,61 +328,62 @@
         
         <!-- Explicación de la ecuación -->
         <div class="mt-6 mb-10 text-sm text-left text-gray-600">
-            <p><strong>¿Qué significa esta ecuación?</strong></p>
+            <p><strong>{{ 'MAIN.EXPLANATION_TITLE' | translate }}</strong></p>
             
             <!-- Explicación para gráfica lineal -->
             <p *ngIf="graphType === 'lineal'">
-                La ecuación generada es una relación lineal entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. La pendiente indica la tasa de cambio de <strong>{{ labelY }}</strong> por cada unidad de <strong>{{ labelX }}</strong>, mientras que el término independiente representa el valor de <strong>{{ labelY }}</strong> cuando <strong>{{ labelX }}</strong> es igual a cero.
+                {{ 'MAIN.LINEAR_EXPLANATION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
             <p *ngIf="graphType === 'lineal'" class="mt-4">
-                <strong>¿Cómo se interpreta una pendiente?</strong><br>
-                La pendiente de una línea representa cuánto cambia <strong>{{ labelY }}</strong> por cada unidad de <strong>{{ labelX }}</strong>. 
-                - Si la pendiente es positiva, significa que <strong>{{ labelY }}</strong> aumenta a medida que <strong>{{ labelX }}</strong> aumenta.
-                - Si la pendiente es negativa, significa que <strong>{{ labelY }}</strong> disminuye a medida que <strong>{{ labelX }}</strong> aumenta.
-                - Una pendiente de cero indica que no hay cambio en <strong>{{ labelY }}</strong>, independientemente de <strong>{{ labelX }}</strong>.
+                <strong>{{ 'MAIN.LINEAR_SLOPE_TITLE' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}</strong><br>
+                {{ 'MAIN.LINEAR_SLOPE_DESCRIPTION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.LINEAR_SLOPE_POSITIVE' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.LINEAR_SLOPE_NEGATIVE' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' } }}<br>
+                {{ 'MAIN.LINEAR_SLOPE_ZERO' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
 
             <!-- Explicación para gráfica polinómica -->
             <p *ngIf="graphType === 'polynomial'">
-                La ecuación generada es una relación polinómica entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Los coeficientes determinan la forma de la curva, incluyendo su curvatura y puntos de inflexión. Esta ecuación describe cómo <strong>{{ labelY }}</strong> cambia de manera no lineal en función de <strong>{{ labelX }}</strong>.
+                {{ 'MAIN.POLYNOMIAL_EXPLANATION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
             <p *ngIf="graphType === 'polynomial'" class="mt-4">
-                <strong>¿Cómo se interpretan los coeficientes?</strong><br>
-                - El coeficiente del término cuadrático determina la curvatura de la gráfica.<br>
-                - El coeficiente del término lineal afecta la inclinación de la curva.<br>
-                - El término independiente indica el valor de <strong>{{ labelY }}</strong> cuando <strong>{{ labelX }}</strong> es igual a cero.
+                <strong>{{ 'MAIN.POLYNOMIAL_COEFFICIENTS_TITLE' | translate }}</strong><br>
+                {{ 'MAIN.POLYNOMIAL_COEFFICIENTS_QUADRATIC' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.POLYNOMIAL_COEFFICIENTS_LINEAR' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.POLYNOMIAL_COEFFICIENTS_CONSTANT' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
 
             <!-- Explicación para gráfica exponencial -->
             <p *ngIf="graphType === 'exponencial'">
-                La ecuación generada es una relación exponencial entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Esto significa que <strong>{{ labelY }}</strong> crece o decrece de manera proporcional a una potencia de <strong>{{ labelX }}</strong>. Los coeficientes determinan la tasa de crecimiento o decrecimiento.
+                {{ 'MAIN.EXPONENTIAL_EXPLANATION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
             <p *ngIf="graphType === 'exponencial'" class="mt-4">
-                <strong>¿Cómo se interpretan los coeficientes?</strong><br>
-                - El coeficiente inicial determina el valor base de <strong>{{ labelY }}</strong>.<br>
-                - El exponente controla la velocidad de crecimiento o decrecimiento de la gráfica.<br>
-                - Una tasa de crecimiento positiva indica un aumento exponencial, mientras que una negativa indica un decrecimiento exponencial.
+                <strong>{{ 'MAIN.EXPONENTIAL_COEFFICIENTS_TITLE' | translate }}</strong><br>
+                {{ 'MAIN.EXPONENTIAL_COEFFICIENTS_INITIAL' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.EXPONENTIAL_COEFFICIENTS_EXPONENT' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.EXPONENTIAL_COEFFICIENTS_GROWTH' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
+
             <!-- Explicación para gráfica inversa -->
             <p *ngIf="graphType === 'inversa'">
-              La ecuación generada es una relación inversa entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Esto significa que a medida que <strong>{{ labelX }}</strong> aumenta, <strong>{{ labelY }}</strong> disminuye proporcionalmente. La gráfica tiene una forma hiperbólica.
+                {{ 'MAIN.INVERSE_EXPLANATION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
             <p *ngIf="graphType === 'inversa'" class="mt-4">
-              <strong>¿Cómo se interpretan los coeficientes?</strong><br>
-              - El coeficiente determina la escala de la curva.<br>
-              - Una relación inversa implica que el producto de <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong> es constante.<br>
-              - Si <strong>{{ labelX }}</strong> se acerca a cero, <strong>{{ labelY }}</strong> tiende a infinito.
+                <strong>{{ 'MAIN.INVERSE_COEFFICIENTS_TITLE' | translate }}</strong><br>
+                {{ 'MAIN.INVERSE_COEFFICIENTS_SCALE' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.INVERSE_COEFFICIENTS_PRODUCT' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.INVERSE_COEFFICIENTS_INFINITY' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
-          
+
             <!-- Explicación para gráfica logarítmica -->
             <p *ngIf="graphType === 'logaritmica'">
-              La ecuación generada es una relación logarítmica entre <strong>{{ labelX }}</strong> y <strong>{{ labelY }}</strong>. Esto significa que <strong>{{ labelY }}</strong> crece de manera más lenta a medida que <strong>{{ labelX }}</strong> aumenta. Los coeficientes determinan la inclinación y el desplazamiento de la curva.
+                {{ 'MAIN.LOGARITHMIC_EXPLANATION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
             <p *ngIf="graphType === 'logaritmica'" class="mt-4">
-              <strong>¿Cómo se interpretan los coeficientes?</strong><br>
-              - El coeficiente inicial determina el valor base de <strong>{{ labelY }}</strong>.<br>
-              - El coeficiente del logaritmo controla la inclinación de la curva.<br>
-              - La gráfica no está definida para valores de <strong>{{ labelX }}</strong> menores o iguales a cero.
+                <strong>{{ 'MAIN.LOGARITHMIC_COEFFICIENTS_TITLE' | translate }}</strong><br>
+                {{ 'MAIN.LOGARITHMIC_COEFFICIENTS_INITIAL' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.LOGARITHMIC_COEFFICIENTS_SLOPE' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}<br>
+                {{ 'MAIN.LOGARITHMIC_COEFFICIENTS_DOMAIN' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' }  }}
             </p>
           </div>
 

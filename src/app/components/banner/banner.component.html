@@ -6,23 +6,25 @@
     </div>
     <!-- Contenido centrado -->
     <div class="text-white relative max-w-4xl mx-auto p-6">
-        <h2 class="w-36 text-xl bg-black/60 p-2 mb-2 text-center font-light">Instrucciones</h2>
+        <h2 class="w-36 text-xl bg-black/60 p-2 mb-2 text-center font-light">
+            {{ 'BANNER.TITLE' | translate }}
+        </h2>
         <ol class="text-lg list-decimal list-inside text-shadow-md max-md:text-sm bg-black/60 p-2">
             <li class="flex items-center p-1 pl-2">
                 <span class="flex items-center justify-center w-6 h-6 bg-white text-black font-bold rounded-full mr-2 shrink-0">1</span>
-                Asigne las etiquetas de los ejes.
+                {{ 'BANNER.STEP_1' | translate }}
             </li>
             <li class="flex items-center p-1 pl-2">
                 <span class="flex items-center justify-center w-6 h-6 bg-white text-black font-bold rounded-full mr-2 shrink-0">2</span>
-                Ingrese los datos X e Y en la tabla uno por uno, presione "+" para generar más filas.
+                {{ 'BANNER.STEP_2' | translate }}
             </li>
             <li class="flex items-center p-1 pl-2">
                 <span class="flex items-center justify-center w-6 h-6 bg-white text-black font-bold rounded-full mr-2 shrink-0">3</span>
-                Pulse "Generar" para mostrar sus valores.
+                {{ 'BANNER.STEP_3' | translate }}
             </li>
             <li class="flex items-center p-1 pl-2">
                 <span class="flex items-center justify-center w-6 h-6 bg-white text-black font-bold rounded-full mr-2 shrink-0">4</span>
-                Seleccione el tipo de gráfica que quiere.
+                {{ 'BANNER.STEP_4' | translate }}
             </li>
         </ol>
     </div>

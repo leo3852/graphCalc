@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Chart,registerables } from 'chart.js';
 import zoomPlugin from 'chartjs-plugin-zoom';
 
 @Component({
   selector: 'app-main',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -33,7 +34,7 @@ export class MainComponent implements AfterViewInit {
   chart: Chart | null = null;
   graphType: any;
   
-  constructor() {
+  constructor(private translate: TranslateService) {
     // Registrar todos los componentes necesarios de Chart.js
     Chart.register(...registerables,zoomPlugin);
   }
@@ -158,7 +159,7 @@ export class MainComponent implements AfterViewInit {
   
       // Agregar un nuevo dataset para los puntos de corte
       this.chart.data.datasets.push({
-        label: 'Puntos de corte',
+        label: this.translate.instant('MAIN.AXIS_INTERSECTIONS'),
         data: points,
         backgroundColor: 'black',
         borderColor: 'black',
@@ -172,7 +173,7 @@ export class MainComponent implements AfterViewInit {
     if (this.chart) {
       // Filtrar para eliminar el dataset de los puntos de corte
       this.chart.data.datasets = this.chart.data.datasets.filter(
-        (dataset) => dataset.label !== 'Puntos de corte'
+        (dataset) => dataset.label !== this.translate.instant('MAIN.AXIS_INTERSECTIONS')
       );
     }
   }
@@ -224,6 +225,12 @@ export class MainComponent implements AfterViewInit {
       if (!this.labelX || !this.labelY) {
         this.showError = true; // Mostrar mensajes de error si los inputs están vacíos
         return;
+      }
+      if(this.unitX === '') {
+        this.unitX = 'Uni'; // Asignar una unidad por defecto si no se ha seleccionado
+      }
+      if(this.unitY === '') {
+        this.unitY = 'Uni'; // Asignar una unidad por defecto si no se ha seleccionado
       }
       this.showError = false; // Ocultar mensajes de error si los inputs son válidos
       this.currentStep = 2; // Avanzar al siguiente paso
@@ -289,7 +296,7 @@ export class MainComponent implements AfterViewInit {
       data: {
         datasets: [
           {
-            label: 'Datos',
+            label: this.translate.instant('MAIN.DATASET_LABEL'),
             data: this.values, // Mantener los valores originales { x, y }
             borderColor: 'red',
             backgroundColor: 'red',
@@ -369,78 +376,71 @@ export class MainComponent implements AfterViewInit {
   generateLinearGraph(): void {
     this.graphType = 'lineal';
     const { m, b } = this.calculateLinearRegression(this.values);
-
+  
     // Generar la ecuación lineal con manejo de signos
     this.equation = `y = ${m.toFixed(2)}x ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(2)}`;
-
+  
     // Calcular los límites de los puntos originales
     const originalMinX = Math.min(...this.values.map((pair) => pair.x));
     const originalMaxX = Math.max(...this.values.map((pair) => pair.x));
     const originalMinY = Math.min(...this.values.map((pair) => pair.y));
     const originalMaxY = Math.max(...this.values.map((pair) => pair.y));
-
-    // Agregar un margen alrededor de los puntos originales
-    const marginX = (originalMaxX - originalMinX) * 0.2; // 20% de margen
-    const marginY = (originalMaxY - originalMinY) * 0.2; // 20% de margen
-
+  
+    // Agregar un margen dinámico basado en el rango de los datos originales
+    const marginX = (originalMaxX - originalMinX) * 0.1; // 10% de margen
+    const marginY = (originalMaxY - originalMinY) * 0.1; // 10% de margen
+  
+    // Límites iniciales enfocados en los datos
     let initialMinX = originalMinX - marginX;
     let initialMaxX = originalMaxX + marginX;
     let initialMinY = originalMinY - marginY;
     let initialMaxY = originalMaxY + marginY;
-
+  
     // Respetar la lógica de startFromZero
     if (this.startFromZero) {
       initialMinX = 0;
       initialMinY = 0;
     }
-
-    // Calcular los rangos de los ejes
-    const rangeX = initialMaxX - initialMinX;
-    const rangeY = initialMaxY - initialMinY;
-
-    // Ajustar los rangos para que sean proporcionales
-    const maxRange = Math.max(rangeX, rangeY);
-    initialMaxX = initialMinX + maxRange;
-    initialMaxY = initialMinY + maxRange;
-
-    // Calcular los extremos del eje X para extender la línea
-    const extendedMinX = initialMinX - 100; // Extender 100 unidades hacia la izquierda
-    const extendedMaxX = initialMaxX + 100; // Extender 100 unidades hacia la derecha
-
-    // Generar puntos adicionales para extender la línea
-    const extendedLineData = [
-      { x: extendedMinX, y: m * extendedMinX + b },
-      { x: extendedMaxX, y: m * extendedMaxX + b }
-    ];
-
+  
+    // Extender los límites generales para permitir alejarse y explorar más
+    const extendedMinX = initialMinX - (initialMaxX - initialMinX) * 2; // Extender hacia la izquierda
+    const extendedMaxX = initialMaxX + (initialMaxX - initialMinX) * 2; // Extender hacia la derecha
+    const extendedMinY = initialMinY - (initialMaxY - initialMinY) * 2; // Extender hacia abajo
+    const extendedMaxY = initialMaxY + (initialMaxY - initialMinY) * 2; // Extender hacia arriba
+  
+    // Generar puntos intermedios para la línea (100 puntos entre extendedMinX y extendedMaxX)
+    const lineData = Array.from({ length: 100 }, (_, i) => {
+      const x = extendedMinX + (i * (extendedMaxX - extendedMinX)) / 99;
+      return { x, y: m * x + b };
+    });
+  
     if (this.chart) {
       this.chart.destroy(); // Destruye la gráfica anterior si existe
     }
-
+  
     const canvas = document.getElementById('chartCanvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.error('Unable to get 2D context');
       return;
     }
-
+  
     this.chart = new Chart(ctx, {
       type: 'scatter',
       data: {
         datasets: [
           {
             label: this.equation,
-            data: extendedLineData, // Usar los puntos extendidos para la línea
+            data: lineData, // Usar los puntos generados para la línea
             borderColor: 'blue',
             backgroundColor: 'transparent',
             borderWidth: 2,
             pointRadius: 0, // No mostrar puntos
             showLine: true, // Conectar los puntos con una línea
-            tension: 0, // Línea recta
-// clip: false // Permitir que la línea se dibuje fuera del área visible
+            tension: 0 // Línea recta
           },
           {
-            label: 'Datos',
+            label: this.translate.instant('MAIN.DATASET_LABEL'),
             data: this.values, // Mostrar los puntos originales
             borderColor: 'red',
             backgroundColor: 'red',
@@ -460,8 +460,8 @@ export class MainComponent implements AfterViewInit {
           },
           zoom: {
             pan: {
-              enabled: true, // Habilitar el movimiento (pan)
-              mode: 'xy', // Permitir mover en ambos ejes (x e y)
+              enabled: true,
+              mode: 'xy' // Permitir mover en ambos ejes (x e y)
             },
             zoom: {
               wheel: {
@@ -470,7 +470,7 @@ export class MainComponent implements AfterViewInit {
               pinch: {
                 enabled: true // Habilitar zoom con gestos táctiles
               },
-              mode: 'xy', // Permitir zoom en ambos ejes (x e y)
+              mode: 'xy' // Permitir zoom en ambos ejes (x e y)
             }
           }
         },
@@ -478,35 +478,39 @@ export class MainComponent implements AfterViewInit {
           x: {
             title: {
               display: true,
-              text: `${this.labelX} (${this.unitX ? this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
+              text: `${this.labelX} (${this.unitX ? this.unitX : 'Unidad'})`
             },
-            min: initialMinX, // Usar los límites iniciales centrados en los puntos originales
+            min: initialMinX, // Enfocar en los datos cargados
             max: initialMaxX,
+            suggestedMin: extendedMinX, // Permitir alejarse más allá de los datos
+            suggestedMax: extendedMaxX,
             grid: {
               drawTicks: true,
               color: (context) => {
-                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje X en gris oscuro en 0
+                return context.tick.value === 0 ? 'black' : '#e0e0e0';
               }
             }
           },
           y: {
             title: {
               display: true,
-              text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
+              text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})`
             },
-            min: initialMinY, // Usar los límites iniciales centrados en los puntos originales
+            min: initialMinY, // Enfocar en los datos cargados
             max: initialMaxY,
+            suggestedMin: extendedMinY, // Permitir alejarse más allá de los datos
+            suggestedMax: extendedMaxY,
             grid: {
               drawTicks: true,
               color: (context) => {
-                return context.tick.value === 0 ? 'black' : '#e0e0e0'; // Eje Y en gris oscuro en 0
+                return context.tick.value === 0 ? 'black' : '#e0e0e0';
               }
             }
           }
         }
       }
     });
-
+  
     // Actualizar los puntos de corte si el toggle está activado
     this.updateIntersections();
   }
@@ -514,59 +518,64 @@ export class MainComponent implements AfterViewInit {
   generatePolynomialGraph(): void {
     this.graphType = 'polynomial';
     const { a, b, c } = this.calculatePolynomialRegression(this.values);
-  
+
     // Generar la ecuación polinómica con manejo de signos
     this.equation = `y = ${a.toFixed(2)}x² ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(2)}x ${c >= 0 ? '+ ' : '- '}${Math.abs(c).toFixed(2)}`;
-  
+
     // Calcular los límites de los puntos originales
     const originalMinX = Math.min(...this.values.map((pair) => pair.x));
     const originalMaxX = Math.max(...this.values.map((pair) => pair.x));
     const originalMinY = Math.min(...this.values.map((pair) => pair.y));
     const originalMaxY = Math.max(...this.values.map((pair) => pair.y));
-  
+
     // Agregar un margen alrededor de los puntos originales
     const marginX = (originalMaxX - originalMinX) * 0.2; // 20% de margen
     const marginY = (originalMaxY - originalMinY) * 0.2; // 20% de margen
-  
+
     let initialMinX = originalMinX - marginX;
     let initialMaxX = originalMaxX + marginX;
     let initialMinY = originalMinY - marginY;
     let initialMaxY = originalMaxY + marginY;
-  
+
     // Respetar la lógica de startFromZero
     if (this.startFromZero) {
       initialMinX = 0;
       initialMinY = 0;
     }
-  
+
     // Calcular los rangos de los ejes
     const rangeX = initialMaxX - initialMinX;
     const rangeY = initialMaxY - initialMinY;
-  
+
     // Ajustar los rangos para que sean proporcionales
     const maxRange = Math.max(rangeX, rangeY);
     initialMaxX = initialMinX + maxRange;
     initialMaxY = initialMinY + maxRange;
-  
+
     // Calcular los extremos del eje X para extender la curva
     const extendedMinX = initialMinX - 10; // Extender 10 unidades hacia la izquierda
     const extendedMaxX = initialMaxX + 10; // Extender 10 unidades hacia la derecha
-  
+
     // Generar puntos de la curva polinómica (100 puntos entre extendedMinX y extendedMaxX)
     const labels = Array.from({ length: 100 }, (_, i) => extendedMinX + (i * (extendedMaxX - extendedMinX) / 99));
     const polynomialData = labels.map((x) => ({ x, y: a * x * x + b * x + c }));
-  
+
+    // Calcular el vértice de la parábola
+    const vertexX = -b / (2 * a); // Coordenada X del vértice
+    const vertexY = a * vertexX * vertexX + b * vertexX + c; // Coordenada Y del vértice
+    const vertexPoint = { x: vertexX, y: vertexY }; // Vértice como un punto
+
     if (this.chart) {
       this.chart.destroy(); // Destruye la gráfica anterior si existe
     }
-  
+
     const canvas = document.getElementById('chartCanvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
       console.error('Unable to get 2D context');
       return;
     }
-  
+
     this.chart = new Chart(ctx, {
       type: 'scatter', // Mantener el tipo de gráfico como 'scatter'
       data: {
@@ -582,7 +591,7 @@ export class MainComponent implements AfterViewInit {
             tension: 0.4, // Curva suave
           },
           {
-            label: 'Datos',
+            label: this.translate.instant('MAIN.DATASET_LABEL'),
             data: this.values, // Mostrar los puntos originales { x, y }
             borderColor: 'red',
             backgroundColor: 'red',
@@ -590,6 +599,16 @@ export class MainComponent implements AfterViewInit {
             pointRadius: 5, // Tamaño de los puntos
             pointStyle: 'circle', // Estilo de los puntos
             showLine: false // No conectar los puntos con una línea
+          },
+          {
+            label: 'Vértice',
+            data: [vertexPoint], // Agregar el vértice
+            borderColor: 'gray',
+            backgroundColor: 'gray',
+            borderWidth: 0,
+            pointRadius: 4, // Tamaño del vértice
+            pointStyle: 'circle', // Estilo del vértice
+            showLine: false // No conectar el vértice con una línea
           }
         ]
       },
@@ -668,8 +687,6 @@ export class MainComponent implements AfterViewInit {
     // Generar la ecuación exponencial
     this.equation = `y = ${A.toFixed(6)} * ${B.toFixed(6)}^x`;
   
-    console.log('Ecuación generada:', this.equation);
-  
     // Calcular los límites de los puntos originales
     const originalMinX = Math.min(...this.values.map((pair) => pair.x));
     const originalMaxX = Math.max(...this.values.map((pair) => pair.x));
@@ -734,7 +751,7 @@ export class MainComponent implements AfterViewInit {
             tension: 0.4, // Curva suave
           },
           {
-            label: 'Datos',
+            label: this.translate.instant('MAIN.DATASET_LABEL'),
             data: this.values, // Mostrar los puntos originales
             borderColor: 'red',
             backgroundColor: 'red',
@@ -819,13 +836,7 @@ export class MainComponent implements AfterViewInit {
     const { m: B, b: A } = this.calculateLinearRegression(transformedValues);
   
     // Generar la ecuación logarítmica
-    this.equation = `y = ${A.toFixed(6)} ${B >= 0 ? '+ ' : '- '} ${Math.abs(B).toFixed(6)} * ln(x)`;
-  
-    // Calcular el punto de corte con el eje X (y = 0)
-    let xIntercept = null;
-    if (B !== 0) {
-      xIntercept = Math.exp(-A / B); // x = e^(-A / B)
-    }
+    this.equation = `y = ${A.toFixed(6)} + ln(${B.toFixed(6)} * x)`;
   
     // Calcular los límites de los puntos originales
     const originalMinX = Math.min(...this.values.map((pair) => pair.x));
@@ -834,8 +845,8 @@ export class MainComponent implements AfterViewInit {
     const originalMaxY = Math.max(...this.values.map((pair) => pair.y));
   
     // Agregar un margen alrededor de los puntos originales
-    const marginX = (originalMaxX - originalMinX) * 0.2; // 20% de margen
-    const marginY = (originalMaxY - originalMinY) * 0.2; // 20% de margen
+    const marginX = (originalMaxX - originalMinX) * 0.5; // 50% de margen
+    const marginY = (originalMaxY - originalMinY) * 0.5; // 50% de margen
   
     let initialMinX = Math.max(0.1, originalMinX - marginX); // Evitar valores <= 0
     let initialMaxX = originalMaxX + marginX;
@@ -848,23 +859,15 @@ export class MainComponent implements AfterViewInit {
       initialMinY = 0;
     }
   
-    // Extender el eje X para incluir el punto de corte con el eje X y un poco más
-    if (xIntercept && xIntercept > 0) {
-      initialMinX = Math.min(initialMinX, xIntercept * 0.8); // Extender hacia la izquierda
-      initialMaxX = Math.max(initialMaxX, xIntercept * 1.2); // Extender hacia la derecha
-    }
+    const extendedMinY = initialMinY - marginY; // Extender hacia abajo
+    const extendedMaxY = initialMaxY + marginY; // Extender hacia arriba
+    // Extender los límites de los ejes para simular una línea infinita
+    const extendedMinX = Math.max(0.1, originalMinX / 100); // Extender hacia la izquierda (reducir a 1/100)
+    const extendedMaxX = originalMaxX * 100; // Extender hacia la derecha (multiplicar por 100)
+
   
-    // Calcular los rangos de los ejes
-    const rangeX = initialMaxX - initialMinX;
-    const rangeY = initialMaxY - initialMinY;
-  
-    // Ajustar los rangos para que sean proporcionales
-    const maxRange = Math.max(rangeX, rangeY);
-    initialMaxX = initialMinX + maxRange;
-    initialMaxY = initialMinY + maxRange;
-  
-    // Generar puntos de la curva logarítmica (200 puntos entre initialMinX y initialMaxX)
-    const labels = Array.from({ length: 200 }, (_, i) => initialMinX + (i * (initialMaxX - initialMinX) / 199));
+    // Generar puntos de la curva logarítmica (300 puntos entre extendedMinX y extendedMaxX)
+    const labels = Array.from({ length: 1000 }, (_, i) => extendedMinX + (i * (extendedMaxX - extendedMinX) / 999));
     const logaritmicData = labels
       .filter(x => x > 0) // Evitar valores negativos o cero para x, ya que ln(x) no está definido
       .map((x) => ({ x, y: A + B * Math.log(x) })); // Generar puntos de la curva logarítmica
@@ -895,7 +898,7 @@ export class MainComponent implements AfterViewInit {
             tension: 0.4, // Curva suave
           },
           {
-            label: 'Datos',
+            label: this.translate.instant('MAIN.DATASET_LABEL'),
             data: this.values, // Mostrar los puntos originales
             borderColor: 'red',
             backgroundColor: 'red',
@@ -935,8 +938,8 @@ export class MainComponent implements AfterViewInit {
               display: true,
               text: `${this.labelX} (${this.unitX ? this.unitX : 'Unidad'})` // Mostrar etiqueta con unidad
             },
-            min: initialMinX,
-            max: initialMaxX, // Forzar que el eje x termine en el máximo valor ajustado
+            min: extendedMinX,
+            max: extendedMaxX, // Usar los límites extendidos
             grid: {
               drawTicks: true,
               color: (context) => {
@@ -949,8 +952,8 @@ export class MainComponent implements AfterViewInit {
               display: true,
               text: `${this.labelY} (${this.unitY ? this.unitY : 'Unidad'})` // Mostrar etiqueta con unidad
             },
-            min: initialMinY,
-            max: initialMaxY, // Forzar que el eje y termine en el máximo valor ajustado
+            min: extendedMinY,
+            max: extendedMaxY, // Usar los límites extendidos
             grid: {
               drawTicks: true,
               color: (context) => {
@@ -965,7 +968,7 @@ export class MainComponent implements AfterViewInit {
     // Actualizar los puntos de corte si el toggle está activado
     this.updateIntersections();
   }
-  
+
   generateInversaGraph(): void {
     this.graphType = 'inversa';
   
@@ -1047,7 +1050,7 @@ export class MainComponent implements AfterViewInit {
             tension: 0.4, // Curva suave
           },
           {
-            label: 'Datos',
+            label: this.translate.instant('MAIN.DATASET_LABEL'),
             data: this.values, // Mostrar los puntos originales
             borderColor: 'red',
             backgroundColor: 'red',
