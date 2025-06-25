@@ -520,7 +520,7 @@ export class MainComponent implements AfterViewInit {
     const { a, b, c } = this.calculatePolynomialRegression(this.values);
 
     // Generar la ecuación polinómica con manejo de signos
-    this.equation = `y = ${a.toFixed(2)}x² ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(2)}x ${c >= 0 ? '+ ' : '- '}${Math.abs(c).toFixed(2)}`;
+    this.equation = `y = ${a.toFixed(4)}x² ${b >= 0 ? '+ ' : '- '}${Math.abs(b).toFixed(4)}x ${c >= 0 ? '+ ' : '- '}${Math.abs(c).toFixed(4)}`;
 
     // Calcular los límites de los puntos originales
     const originalMinX = Math.min(...this.values.map((pair) => pair.x));

@@ -10,3 +10,18 @@ ul {
   li {
     transition: background-color 0.2s ease;
   }
+
+/* Estado inicial (oculto) */
+.dropdown {
+  opacity: 0;
+  transform: translateX(40px) scale(0.95); /* Mover hacia la derecha y reducir tamaño */
+  pointer-events: none; /* Evitar interacción cuando está oculto */
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Estado visible */
+.dropdown.open {
+  opacity: 1;
+  transform: translateX(0) scale(1); /* Volver a la posición original y tamaño normal */
+  pointer-events: auto; /* Permitir interacción */
+}

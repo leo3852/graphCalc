@@ -150,18 +150,18 @@
         </div>
         <h2 class="text-2xl mb-4 text-gray-700 font-light ">{{ 'MAIN.INSERT_VALUES' | translate }}</h2>
         <p class="text-sm md:hidden text-gray-600">{{'MAIN.STEP_2_DESCRIPTION' | translate:{ labelX: labelX, unitX: unitX, labelY: labelY, unitY: unitY || 'Unidad' } }}</p>
-        <form class="space-y-6 flex items-center justify-center mt-5 md:mt-10">
+        <form class="space-y-6 flex items-center justify-center mt-5 mb-5 md:mt-10">
             <div class="flex items-center gap-6 justify-center">
                 <div>
                     <!-- Inputs organizados horizontalmente -->
-                    <div class="flex items-center gap-4 w-full">
+                    <div class="flex items-center justify-between gap-4 w-full">
                         <label for="valueX" class="text-sm w-full text-gray-700 max-md:hidden md:block">{{ 'MAIN.LABEL_VALUE_X' | translate:{ labelX: labelX, unitX: unitX || 'Unidad' } }}</label>
                         <input id="valueX" type="number" inputmode="numeric" 
                         [(ngModel)]="valueX" name="valueX" 
                         class="mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="{{labelX}}">
                     </div>
-                    <div class="flex items-center gap-4 w-full">
+                    <div class="flex items-center justify-between gap-4 w-full">
                         <label for="valueY" class="text-sm text-gray-700  max-md:hidden md:block">{{ 'MAIN.LABEL_VALUE_Y' | translate:{ labelY: labelY, unitY: unitY || 'Unidad' } }}</label>
                         <input id="valueY" type="number" inputmode="numeric" 
                         [(ngModel)]="valueY" name="valueY" 
