@@ -1,59 +1,39 @@
-# GraphCalc
+# 📊 Grafer — Interactive Graph Generator
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+[![Website](https://img.shields.io/badge/Live-Demo-blue?style=flat&logo=google-chrome)](https://grafer3mil.xyz/)
 
-## Development server
+**Grafer** is a web application designed to help teachers and students create and visualize mathematical graphs based on user inputs. It not only plots the data but also automatically detects and generates the best-fitting equation — whether linear, polynomial, exponential, or more — making it an ideal educational tool for exploring mathematical models.
 
-To start a local development server, run:
+---
+## 🚀 Features
 
-```bash
-ng serve
-```
+- ✅ **Interactive Graphing Interface**
+- 📈 **Supports Line, Polynomial, Exponential, and other equation types**
+- 🧠 **Automatic curve fitting and equation detection**
+- 🔍 **Live graph preview and updates on input**
+- 🌐 **Fully web-based and responsive**
+- 💡 **Simple and intuitive UI for educational use**
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 🔗 Live Demo
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Check out the app here:  
+👉 **[https://grafer3mil.xyz/](https://grafer3mil.xyz/)**
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+<img width="983" height="865" alt="image" src="https://github.com/user-attachments/assets/8c8a3665-c172-4f73-9187-e7907c693b39" />
+<img width="1226" height="626" alt="image" src="https://github.com/user-attachments/assets/b6f8dd14-8e0d-481e-a1ed-a0da55cdc3a0" />
 
-```bash
-ng generate --help
-```
 
-## Building
+---
 
-To build the project run:
+## ⚙️ Technologies Used
 
-```bash
-ng build
-```
+- **Frontend**: Angular, Tailwind, HTML, SCSS, Typescript
+- **Graphing Library**: Chart.js 
+- **Hosting**: Deployed on Github
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
